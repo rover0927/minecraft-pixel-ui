@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!--
+  Minecraft CSS 方块演示页骨架（模板）
+  1. 把 assets/minecraft-blocks.css 与 assets/blocks.js 复制到本文件同目录。
+  2. 按素材实际位置调整 blocks.js 顶部 TEX_PATH。
+  3. 容器 ID（#hero-row / #effect-grid / #glow-gallery / #full-gallery）与生成类名是 JS 钩子，不要改名。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minecraft CSS 方块特效库</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='5' fill='%236ab84a'/%3E%3Crect y='5' width='16' height='11' fill='%23866043'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&display=swap">
+  <link rel="stylesheet" href="minecraft-blocks.css">
+  <style>
+    :root {
+      --mc-panel: #38302a;
+      --mc-card: #2a231c;
+      --mc-line: #120e0a;
+      --mc-edge-light: rgba(255, 255, 255, 0.14);
+      --mc-edge-dark: rgba(0, 0, 0, 0.45);
+      --mc-text: #e8e2d4;
+      --mc-dim: #b3a993;
+      --mc-grass: #6ab84a;
+      --mc-gold: #f5c542;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { image-rendering: pixelated; }
+    body {
+      min-height: 100vh;
+      font-family: "Press Start 2P", "Microsoft YaHei", "PingFang SC", monospace;
+      color: var(--mc-text);
+      padding: 30px 20px 40px;
+      background-color: #241d16;
+      background-image:
+        linear-gradient(rgba(12, 9, 6, 0.55), rgba(12, 9, 6, 0.55)),
+        url("../mc中文素材/界面-光-泥土-背景.png");
+      background-size: cover, 32px 32px;
+      background-repeat: no-repeat, repeat;
+      background-attachment: fixed, scroll;
+    }
+    .site-header { max-width: 1200px; margin: 0 auto 36px; text-align: center; }
+    h1 {
+      font-size: clamp(22px, 3.4vw, 34px); font-weight: 400;
+      color: #f4f1e6; letter-spacing: 2px;
+      text-shadow: 3px 3px 0 #2b1d10, 6px 6px 0 rgba(0, 0, 0, 0.35);
+    }
+    .subtitle { margin-top: 14px; font-size: 12px; line-height: 1.8; color: var(--mc-dim); text-shadow: 1px 1px 0 #000; }
+    .subtitle .count { color: var(--mc-grass); }
+
+    .section {
+      max-width: 1200px; margin: 0 auto 38px; padding: 26px 24px;
+      background-color: var(--mc-panel);
+      background-image: url("../mc中文素材/石头.png");
+      background-size: 64px 64px; background-blend-mode: multiply;
+      border: 3px solid var(--mc-line);
+      box-shadow: inset 3px 3px 0 var(--mc-edge-light), inset -3px -3px 0 var(--mc-edge-dark);
+    }
+    .section-title { display: flex; align-items: center; gap: 12px; font-size: 18px; color: #fff; text-shadow: 2px 2px 0 #14100c; margin-bottom: 8px; }
+    .section-title::before {
+      content: ""; width: 18px; height: 18px; flex: none;
+      background-image: url("../mc中文素材/草方块-顶面.png");
+      background-size: 18px 18px; image-rendering: pixelated; border: 2px solid var(--mc-line);
+    }
+    .section-desc { font-size: 12px; line-height: 1.8; color: var(--mc-dim); margin-bottom: 24px; text-shadow: 1px 1px 0 #000; }
+
+    .hero-row { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 56px; padding: 20px 0; }
+    .hero-hint { margin-top: 12px; font-size: 11px; color: var(--mc-gold); text-shadow: 1px 1px 0 #000; animation: mc-hint-blink 1.5s steps(2, jump-none) infinite; }
+    @keyframes mc-hint-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+    .effect-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(172px, 1fr)); gap: 18px; }
+    .effect-item, .block-card {
+      display: flex; flex-direction: column; align-items: center; min-width: 0;
+      padding: 18px 10px 14px; background: var(--mc-card); border: 2px solid var(--mc-line);
+      box-shadow: inset 2px 2px 0 rgba(255,255,255,.08), inset -2px -2px 0 rgba(0,0,0,.45);
+      transition: transform 0.15s steps(2, jump-none), border-color 0.15s;
+    }
+    .effect-item:hover, .block-card:hover { border-color: var(--mc-grass); transform: translateY(-4px); }
+    .effect-name { font-size: 11px; color: #ddd4bf; margin-top: 12px; text-shadow: 1px 1px 0 #000; text-align: center; }
+    .anim-badge { display: inline-block; font-size: 9px; color: var(--mc-text); background: #56493a; border: 1px solid var(--mc-line); padding: 4px 9px; margin-top: 8px; text-shadow: 1px 1px 0 #000; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 16px; justify-items: center; }
+    .block-card .mc-stage { cursor: pointer; }
+    .mc-label { color: var(--mc-text); text-shadow: 1px 1px 0 #000; }
+
+    .footer { max-width: 1200px; margin: 0 auto; padding: 18px 10px; text-align: center; font-size: 11px; color: #9a8f78; text-shadow: 1px 1px 0 #000; border-top: 3px solid var(--mc-line); }
+
+    @media (max-width: 600px) {
+      body { padding: 18px 12px 30px; }
+      .hero-row { gap: 32px; }
+      .effect-grid { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
+      .gallery { grid-template-columns: repeat(auto-fill, minmax(116px, 1fr)); }
+      .section { padding: 20px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>Minecraft CSS 方块特效库</h1>
+    <p class="subtitle">纯 CSS 3D 方块 · <span class="count" id="block-count"></span> 个原版贴图方块 · 多种动态特效 · 点击方块触发动效</p>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title">标志演示：草方块 · 点击横向翻转一圈</h2>
+    <p class="section-desc">点击草方块，它将以 3D 方式绕 Y 轴横向翻转 360°。</p>
+    <div class="hero-row" id="hero-row"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">动画特效一览</h2>
+    <p class="section-desc">同一块石头展示不同动画效果，点击可重新播放单次动画，循环动画持续运行。</p>
+    <div class="effect-grid" id="effect-grid"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">发光方块（Glow）</h2>
+    <p class="section-desc">矿石、光源方块自带发光呼吸效果，颜色按方块特性设定。</p>
+    <div class="gallery" id="glow-gallery"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">完整方块画廊</h2>
+    <p class="section-desc">所有已注册方块，点击任意方块播放横向翻转动画。</p>
+    <div class="gallery" id="full-gallery"></div>
+  </section>
+
+  <div class="footer">Minecraft CSS Blocks · 纯 CSS + 原生 JS 实现</div>
+
+  <script src="blocks.js"></script>
+  <script>
+    /* ===== 首屏演示方块 ===== */
+    const heroBlocks = ["grass", "dirt", "stone", "oak_planks", "oak_log", "cobblestone"];
+    const heroRow = document.getElementById("hero-row");
+    heroBlocks.forEach(key => {
+      const stage = createMinecraftCube(key, { size: "xl" });
+      const cube = stage.querySelector(".mc-cube");
+      cube.addEventListener("click", () => playAnim(cube, "anim-flip-y"));
+      const hint = document.createElement("div");
+      hint.className = "hero-hint";
+      hint.textContent = "点击翻转";
+      stage.appendChild(hint);
+      heroRow.appendChild(stage);
+    });
+
+    /* ===== 特效栅格 ===== */
+    const effects = [
+      { name: "横向翻转 (Flip-Y)", cls: "anim-flip-y", loop: false },
+      { name: "三轴翻转 (Flip-XYZ)", cls: "anim-flip-xyz", loop: false },
+      { name: "悬浮 (Float)", cls: "anim-float", loop: true },
+      { name: "发光 (Glow)", cls: "anim-glow", loop: true },
+      { name: "脉冲 (Pulse)", cls: "anim-pulse", loop: true },
+      { name: "弹跳 (Bounce)", cls: "anim-bounce", loop: true }
+    ];
+    const effectGrid = document.getElementById("effect-grid");
+    effects.forEach(ef => {
+      const item = document.createElement("div");
+      item.className = "effect-item";
+      const stage = createMinecraftCube("stone", { size: "md", label: false });
+      const cube = stage.querySelector(".mc-cube");
+      if (ef.loop) {
+        cube.classList.add("loop", ef.cls);
+      } else {
+        cube.addEventListener("click", () => playAnim(cube, ef.cls));
+      }
+      item.appendChild(stage);
+      const name = document.createElement("div");
+      name.className = "effect-name";
+      name.textContent = ef.name;
+      item.appendChild(name);
+      const badge = document.createElement("span");
+      badge.className = "anim-badge";
+      badge.textContent = ef.loop ? "循环" : "点击触发";
+      item.appendChild(badge);
+      effectGrid.appendChild(item);
+    });
+
+    /* ===== 发光方块画廊 ===== */
+    const glowBlocks = [
+      "diamond_ore", "gold_ore", "emerald_ore", "redstone_ore",
+      "glowstone", "sea_lantern", "diamond_block", "magma_block"
+    ];
+    const glowGallery = document.getElementById("glow-gallery");
+    glowBlocks.forEach(key => {
+      if (!MC_BLOCKS[key]) return;
+      const stage = createMinecraftCube(key, { size: "md" });
+      const cube = stage.querySelector(".mc-cube");
+      cube.classList.add("loop", "anim-glow");
+      cube.addEventListener("click", () => playAnim(cube, "anim-flip-y"));
+      glowGallery.appendChild(stage);
+    });
+
+    /* ===== 完整方块画廊 ===== */
+    const fullGallery = document.getElementById("full-gallery");
+    Object.keys(MC_BLOCKS).forEach(key => {
+      if (glowBlocks.includes(key)) return;
+      const stage = createMinecraftCube(key, { size: "sm" });
+      const cube = stage.querySelector(".mc-cube");
+      cube.classList.add("hover-lift");
+      cube.addEventListener("click", () => playAnim(cube, "anim-flip-y"));
+      fullGallery.appendChild(stage);
+    });
+
+    document.getElementById("block-count").textContent = Object.keys(MC_BLOCKS).length;
+  </script>
+</body>
+</html>
