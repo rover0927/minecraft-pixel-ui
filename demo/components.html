@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minecraft Pixel Components · 组件展示</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='5' fill='%236ab84a'/%3E%3Crect y='5' width='16' height='11' fill='%23866043'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&display=swap">
+<style>
+  :root {
+    --panel: #38302a; --card: #2a231c; --line: #120e0a;
+    --text: #e8e2d4; --dim: #b3a993; --grass: #6ab84a; --gold: #f5c542;
+    --inset-light: rgba(255, 255, 255, 0.1); --inset-dark: rgba(0, 0, 0, 0.45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { image-rendering: pixelated; }
+  body {
+    font-family: "Press Start 2P", "Microsoft YaHei", "PingFang SC", monospace;
+    color: var(--text); background: #241d16;
+    background-image:
+      linear-gradient(rgba(12, 9, 6, 0.6), rgba(12, 9, 6, 0.6)),
+      repeating-linear-gradient(0deg, #2c241c 0 3px, #241d16 3px 6px);
+    padding: 30px 20px 48px;
+  }
+
+  header.page { max-width: 1200px; margin: 0 auto 26px; text-align: center; }
+  h1 { font-size: clamp(20px, 3vw, 30px); font-weight: 400; letter-spacing: 2px; color: #f4f1e6; text-shadow: 3px 3px 0 #2b1d10; }
+  .sub { margin-top: 12px; font-size: 10px; line-height: 2; color: var(--dim); text-shadow: 1px 1px 0 #000; }
+
+  section.group {
+    max-width: 1200px; margin: 0 auto 26px; padding: 20px 18px 22px;
+    background-color: var(--panel); border: 3px solid var(--line);
+    box-shadow: inset 3px 3px 0 var(--inset-light), inset -3px -3px 0 var(--inset-dark);
+  }
+  h2.group-title { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 400; color: #fff; text-shadow: 2px 2px 0 #14100c; margin-bottom: 16px; }
+  h2.group-title::before { content: ""; width: 14px; height: 14px; background: var(--grass); border: 2px solid var(--line); }
+
+  .comps { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .comp { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 12px; background: var(--card); border: 2px solid var(--line); box-shadow: inset 2px 2px 0 rgba(255,255,255,.06), inset -2px -2px 0 rgba(0,0,0,.45); }
+  .comp > header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding-bottom: 7px; border-bottom: 1px dashed rgba(255,255,255,.12); }
+  .comp header b { font-size: 10px; font-weight: 400; color: #fff; text-shadow: 1px 1px 0 #000; }
+  .comp header span { font-size: 8px; color: var(--dim); white-space: nowrap; }
+  .demo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 9px; line-height: 1.7; color: var(--dim); }
+
+  /* 基础控件 */
+  .c-btn { font: inherit; font-size: 9px; padding: 8px 12px; color: var(--text); background: #5a4a35; border: 2px solid var(--line); box-shadow: inset 2px 2px 0 rgba(255,255,255,.18), inset -2px -2px 0 rgba(0,0,0,.4); text-shadow: 1px 1px 0 #000; cursor: pointer; }
+  .c-btn:hover { border-color: var(--grass); }
+  .c-btn.primary { background: #3f6b32; }
+  .c-btn.danger { background: #7a3232; }
+  .c-btn[disabled] { opacity: .45; cursor: not-allowed; }
+  .c-float { width: 34px; height: 34px; font-size: 12px; color: var(--text); background: #3f6b32; border: 2px solid var(--line); box-shadow: inset 2px 2px 0 rgba(255,255,255,.2), inset -2px -2px 0 rgba(0,0,0,.4); display: grid; place-items: center; }
+  .c-link { font-size: 9px; color: var(--grass); text-decoration: none; border-bottom: 1px dashed currentColor; }
+  .c-icon { width: 24px; height: 24px; image-rendering: pixelated; }
+
+  /* 布局 */
+  .c-divider { width: 100%; height: 2px; background: var(--line); box-shadow: 0 1px 0 rgba(255,255,255,.1); margin: 4px 0; }
+  .c-space { display: flex; gap: 6px; }
+  .c-box { width: 26px; height: 26px; background: #56493a; border: 2px solid var(--line); }
+
+  /* 导航 */
+  .c-crumb { display: flex; gap: 6px; align-items: center; font-size: 8px; color: var(--dim); }
+  .c-crumb a { color: var(--dim); text-decoration: none; }
+  .c-crumb a:hover { color: var(--grass); }
+  .c-menu { display: flex; gap: 2px; flex-wrap: wrap; }
+  .c-menu button { font: inherit; font-size: 8px; padding: 7px 9px; color: var(--dim); background: transparent; border: 2px solid transparent; cursor: pointer; }
+  .c-menu button.active { color: #fff; background: #3f6b32; border-color: var(--line); }
+  .c-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .c-tab { font: inherit; font-size: 8px; padding: 7px 9px; color: var(--dim); background: #221b15; border: 2px solid var(--line); border-bottom-color: transparent; cursor: pointer; }
+  .c-tab.active { color: var(--text); background: #4a3d2f; border-color: var(--grass) var(--line) transparent; }
+  .c-steps { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 8px; color: var(--dim); }
+  .c-step { display: flex; align-items: center; gap: 5px; }
+  .c-step i { width: 18px; height: 18px; display: grid; place-items: center; font-style: normal; font-size: 8px; color: #14240f; background: var(--grass); border: 2px solid var(--line); }
+  .c-step.done i { background: #3f6b32; color: #fff; }
+  .c-step.wait i { background: #56493a; color: var(--dim); }
+  .c-pager { display: flex; gap: 4px; }
+  .c-pager button { font: inherit; font-size: 8px; width: 24px; height: 24px; color: var(--dim); background: #221b15; border: 2px solid var(--line); cursor: pointer; }
+  .c-pager button.active { color: #14240f; background: var(--grass); }
+  .c-dropdown { padding: 7px 9px; font-size: 8px; background: #2f2720; border: 2px solid var(--line); color: var(--text); }
+  .c-dropdown .menu { width: 100%; background: #221b15; border: 2px solid var(--line); border-top: 0; }
+  .c-dropdown .menu span { display: block; padding: 6px 8px; font-size: 8px; color: var(--dim); }
+  .c-dropdown .menu span:hover { background: #3f6b32; color: #fff; }
+
+  /* 表单 */
+  .c-input, .c-select, .c-textarea { font: inherit; font-size: 9px; width: 100%; max-width: 210px; color: var(--text); background: #1f1913; border: 2px solid var(--line); box-shadow: inset 2px 2px 0 rgba(0,0,0,.5); padding: 8px; }
+  .c-textarea { min-height: 52px; resize: none; }
+  .c-field { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+  .c-field label { font-size: 8px; color: var(--dim); }
+  .c-check { display: flex; gap: 6px; align-items: center; font-size: 8px; color: var(--dim); }
+  .c-check input { accent-color: #6ab84a; width: 13px; height: 13px; }
+  .c-switch { position: relative; display: inline-flex; width: 34px; height: 18px; }
+  .c-switch input { opacity: 0; width: 0; height: 0; }
+  .c-switch span { position: absolute; inset: 0; background: #3a3027; border: 2px solid var(--line); cursor: pointer; }
+  .c-switch span::after { content: ""; position: absolute; width: 10px; height: 10px; left: 2px; top: 2px; background: #9b8a72; transition: transform .12s steps(2); }
+  .c-switch input:checked + span { background: #3f6b32; }
+  .c-switch input:checked + span::after { transform: translateX(16px); background: #d9f2c8; }
+  .c-range { width: 130px; accent-color: #6ab84a; }
+  .c-rate { color: var(--gold); font-size: 14px; letter-spacing: 2px; }
+  .c-rate .off { color: #5c4f3f; }
+  .c-upload { width: 100%; padding: 14px; text-align: center; font-size: 8px; color: var(--dim); border: 2px dashed #5c4f3f; background: #221b15; }
+
+  /* 展示 */
+  .c-table { width: 100%; border-collapse: collapse; font-size: 8px; }
+  .c-table th, .c-table td { border: 1px solid var(--line); padding: 6px; text-align: left; }
+  .c-table th { background: #4a3d2f; color: #fff; font-weight: 400; }
+  .c-table tr:nth-child(even) td { background: #221b15; }
+  .c-list { width: 100%; font-size: 8px; }
+  .c-list div { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,.1); }
+  .c-card { width: 100%; padding: 10px; background: #221b15; border: 2px solid var(--line); }
+  .c-card h4 { font-size: 9px; font-weight: 400; color: #fff; margin-bottom: 6px; }
+  .c-badge { position: relative; display: inline-block; width: 26px; height: 26px; background: #56493a; border: 2px solid var(--line); }
+  .c-badge em { position: absolute; top: -7px; right: -7px; min-width: 14px; height: 14px; padding: 0 2px; font-style: normal; font-size: 7px; line-height: 14px; text-align: center; color: #fff; background: #b03a3a; border: 1px solid var(--line); }
+  .c-tag { display: inline-block; font-size: 8px; padding: 4px 7px; color: #14240f; background: var(--grass); border: 1px solid var(--line); }
+  .c-tag.gold { background: var(--gold); }
+  .c-tag.gray { background: #56493a; color: var(--text); }
+  .c-avatar { width: 38px; height: 38px; background: #56493a; border: 2px solid var(--line); image-rendering: pixelated; }
+  .c-timeline { font-size: 8px; display: flex; flex-direction: column; gap: 7px; }
+  .c-timeline div { display: flex; gap: 8px; align-items: baseline; }
+  .c-timeline i { width: 7px; height: 7px; background: var(--grass); border: 1px solid var(--line); flex: none; }
+  .c-stat { font-size: 20px; color: var(--gold); text-shadow: 2px 2px 0 #14100c; }
+  .c-stat small { display: block; margin-top: 6px; font-size: 8px; color: var(--dim); text-shadow: none; }
+  .c-desc { width: 100%; font-size: 8px; }
+  .c-desc div { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,.1); }
+  .c-desc b { font-weight: 400; color: var(--dim); width: 64px; flex: none; }
+  .c-seg { display: flex; border: 2px solid var(--line); }
+  .c-seg button { font: inherit; font-size: 8px; padding: 6px 8px; color: var(--dim); background: #221b15; border: 0; cursor: pointer; }
+  .c-seg button.active { background: #3f6b32; color: #fff; }
+  .c-tree { font-size: 8px; line-height: 2; color: var(--dim); }
+  .c-tree b { font-weight: 400; color: var(--text); }
+  .c-empty { width: 100%; padding: 16px; text-align: center; font-size: 8px; color: var(--dim); border: 2px dashed #5c4f3f; }
+  .c-img { width: 52px; height: 52px; image-rendering: pixelated; border: 2px solid var(--line); background: #221b15; }
+
+  /* 反馈 */
+  .c-alert { width: 100%; font-size: 8px; padding: 8px 10px; border: 2px solid var(--line); border-left: 5px solid var(--grass); background: #2f3a28; }
+  .c-alert.warn { border-left-color: var(--gold); background: #3a3324; }
+  .c-alert.error { border-left-color: #b03a3a; background: #3a2626; }
+  .c-modal { width: 100%; border: 2px solid var(--line); background: #221b15; box-shadow: 0 0 0 3px rgba(0,0,0,.35); }
+  .c-modal header { padding: 8px 10px; font-size: 8px; color: #fff; background: #4a3d2f; border-bottom: 2px solid var(--line); }
+  .c-modal p { padding: 10px; font-size: 8px; color: var(--dim); }
+  .c-modal footer { display: flex; justify-content: flex-end; gap: 6px; padding: 8px 10px; border-top: 1px solid rgba(255,255,255,.1); }
+  .c-toast { font-size: 8px; padding: 7px 10px; color: #dff2d4; background: #3f6b32; border: 2px solid var(--line); }
+  .c-notice { width: 100%; padding: 9px 10px; font-size: 8px; color: var(--text); background: #2f2720; border: 2px solid var(--line); border-left: 5px solid #6a8ab0; }
+  .c-notice b { display: block; font-weight: 400; color: #fff; margin-bottom: 5px; }
+  .c-tip { position: relative; font-size: 8px; padding: 6px 8px; border-bottom: 1px dashed var(--dim); color: var(--text); cursor: help; }
+  .c-tip span { position: absolute; left: 0; bottom: 130%; padding: 5px 7px; font-size: 7px; color: #14240f; background: var(--gold); border: 1px solid var(--line); opacity: 0; transition: opacity .12s; white-space: nowrap; }
+  .c-tip:hover span, .c-tip.show span { opacity: 1; }
+  .c-progress { width: 100%; }
+  .c-bar { height: 12px; background: #221b15; border: 2px solid var(--line); }
+  .c-bar i { display: block; height: 100%; background: var(--grass); }
+  .c-bar.gold i { background: var(--gold); }
+  .c-skel { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+  .c-skel i { height: 9px; background: #3a3027; animation: skel 1.2s steps(2) infinite; }
+  .c-skel i:nth-child(2) { width: 82%; }
+  .c-skel i:nth-child(3) { width: 60%; }
+  @keyframes skel { 50% { background: #4a3d2f; } }
+  .c-result { width: 100%; text-align: center; padding: 12px; font-size: 9px; color: var(--text); }
+  .c-result img { width: 32px; height: 32px; image-rendering: pixelated; display: block; margin: 0 auto 8px; }
+
+  @media (max-width: 640px) {
+    body { padding: 20px 12px 36px; }
+    .comps { grid-template-columns: 1fr; }
+    section.group { padding: 16px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page">
+  <h1>Minecraft Pixel Components</h1>
+  <p class="sub">用 minecraft-pixel-ui 的像素样式复刻常见前端组件 · 覆盖基础 / 布局 / 导航 / 表单 / 展示 / 反馈</p>
+</header>
+
+<section class="group">
+  <h2 class="group-title">基础 · Basic</h2>
+  <div class="comps">
+    <article class="comp">
+      <header><b>Button</b><span>按钮</span></header>
+      <div class="demo">
+        <button class="c-btn">Default</button>
+        <button class="c-btn primary">Primary</button>
+        <button class="c-btn danger">Danger</button>
+        <button class="c-btn" disabled>Disabled</button>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>FloatButton</b><span>悬浮按钮</span></header>
+      <div class="demo">
+        <div class="c-float">↑</div>
+        <div class="c-float" style="background:#5a4a35">?</div>
+        <span>固定右下角 · 34×34</span>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Link / Icon</b><span>链接 / 图标</span></header>
+      <div class="demo">
+        <a class="c-link" href="#">Read the docs</a>
+        <img class="c-icon" src="../assets/item-icons/compass.png" alt="compass">
+        <img class="c-icon" src="../assets/item-icons/diamond.png" alt="diamond">
+        <img class="c-icon" src="../assets/item-icons/book.png" alt="book">
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="group">
+  <h2 class="group-title">布局 · Layout</h2>
+  <div class="comps">
+    <article class="comp">
+      <header><b>Divider</b><span>分割线</span></header>
+      <div class="demo" style="flex-direction:column;align-items:stretch;width:100%">
+        <span>Above</span>
+        <div class="c-divider"></div>
+        <span>Below</span>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Space / Grid</b><span>间距 / 栅格</span></header>
+      <div class="demo">
+        <div class="c-space"><span class="c-box"></span><span class="c-box"></span><span class="c-box"></span></div>
+        <div class="c-space" style="gap:3px"><span class="c-box"></span><span class="c-box"></span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="group">
+  <h2 class="group-title">导航 · Navigation</h2>
+  <div class="comps">
+    <article class="comp">
+      <header><b>Breadcrumb</b><span>面包屑</span></header>
+      <div class="demo">
+        <nav class="c-crumb"><a href="#">Home</a>›<a href="#">World</a>›<span>Chunk</span></nav>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Menu</b><span>导航菜单</span></header>
+      <div class="demo">
+        <div class="c-menu">
+          <button class="active">Home</button><button>Blocks</button><button>Items</button><button>About</button>
+        </div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Tabs</b><span>标签页</span></header>
+      <div class="demo">
+        <div class="c-tabs"><button class="c-tab active">Overview</button><button class="c-tab">Usage</button><button class="c-tab">API</button></div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Steps</b><span>步骤条</span></header>
+      <div class="demo">
+        <div class="c-steps">
+          <span class="c-step done"><i>1</i>Pick</span>
+          <span class="c-step"><i>2</i>Mine</span>
+          <span class="c-step wait"><i>3</i>Craft</span>
+        </div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Pagination</b><span>分页</span></header>
+      <div class="demo">
+        <div class="c-pager"><button>‹</button><button class="active">1</button><button>2</button><button>3</button><button>›</button></div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Dropdown</b><span>下拉菜单</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-dropdown" style="width:100%">Select block ▾
+          <div class="menu"><span>Grass</span><span>Stone</span><span>Diamond Ore</span></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="group">
+  <h2 class="group-title">数据录入 · Data Entry</h2>
+  <div class="comps">
+    <article class="comp">
+      <header><b>Input</b><span>输入框</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-field"><label>Player name</label><input class="c-input" value="Rover0927"></div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>InputNumber</b><span>数字输入框</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-field"><label>Stack size</label><input class="c-input" type="number" value="64" min="1" max="64"></div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Textarea</b><span>多行文本框</span></header>
+      <div class="demo" style="width:100%">
+        <textarea class="c-textarea">Write a note about this chunk…</textarea>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Select</b><span>选择器</span></header>
+      <div class="demo" style="width:100%">
+        <select class="c-select"><option>Overworld</option><option>Nether</option><option>The End</option></select>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Checkbox</b><span>多选框</span></header>
+      <div class="demo" style="flex-direction:column;align-items:flex-start">
+        <label class="c-check"><input type="checkbox" checked> Keep inventory</label>
+        <label class="c-check"><input type="checkbox"> Peaceful mode</label>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Radio</b><span>单选框</span></header>
+      <div class="demo" style="flex-direction:column;align-items:flex-start">
+        <label class="c-check"><input type="radio" name="diff" checked> Easy</label>
+        <label class="c-check"><input type="radio" name="diff"> Hard</label>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Switch</b><span>开关</span></header>
+      <div class="demo">
+        <label class="c-switch"><input type="checkbox" checked><span></span></label>
+        <label class="c-switch"><input type="checkbox"><span></span></label>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Slider</b><span>滑块</span></header>
+      <div class="demo">
+        <input class="c-range" type="range" min="0" max="100" value="62">
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Rate</b><span>评分</span></header>
+      <div class="demo">
+        <span class="c-rate">★★★★<span class="off">★</span></span>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>DatePicker</b><span>日期选择器</span></header>
+      <div class="demo" style="width:100%">
+        <input class="c-input" type="date" value="2026-11-17">
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Upload</b><span>上传</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-upload">Click or drag a .png into this area</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="group">
+  <h2 class="group-title">数据展示 · Data Display</h2>
+  <div class="comps">
+    <article class="comp">
+      <header><b>Table</b><span>表格</span></header>
+      <div class="demo" style="width:100%">
+        <table class="c-table">
+          <thead><tr><th>Block</th><th>Hardness</th><th>Tool</th></tr></thead>
+          <tbody>
+            <tr><td>Stone</td><td>1.5</td><td>Pickaxe</td></tr>
+            <tr><td>Dirt</td><td>0.5</td><td>Shovel</td></tr>
+            <tr><td>Obsidian</td><td>50</td><td>Diamond</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>List</b><span>列表</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-list">
+          <div><span>Diamond ore</span><span>× 12</span></div>
+          <div><span>Redstone</span><span>× 64</span></div>
+          <div><span>Emerald</span><span>× 3</span></div>
+        </div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Card</b><span>卡片</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-card">
+          <h4>Grass Block</h4>
+          <span>A block of dirt with grass on top.</span>
+        </div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Badge / Tag</b><span>徽标 / 标签</span></header>
+      <div class="demo">
+        <span class="c-badge"><em>9</em></span>
+        <span class="c-badge" style="background:#6ab84a"><em>!</em></span>
+        <span class="c-tag">Overworld</span>
+        <span class="c-tag gold">Rare</span>
+        <span class="c-tag gray">Disabled</span>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Avatar</b><span>头像</span></header>
+      <div class="demo">
+        <img class="c-avatar" src="../assets/item-icons/experience_bottle.png" alt="avatar">
+        <img class="c-avatar" src="../assets/item-icons/compass.png" alt="avatar">
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Timeline</b><span>时间轴</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-timeline">
+          <div><i></i><span>Day 1 · spawn</span></div>
+          <div><i></i><span>Day 3 · first diamond</span></div>
+          <div><i style="background:#56493a"></i><span>Day 9 · nether portal</span></div>
+        </div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Statistic</b><span>统计数值</span></header>
+      <div class="demo">
+        <div class="c-stat">154<small>blocks registered</small></div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Descriptions</b><span>描述列表</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-desc">
+          <div><b>Biome</b><span>Plains</span></div>
+          <div><b>Light</b><span>15</span></div>
+        </div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Segmented</b><span>分段控制器</span></header>
+      <div class="demo">
+        <div class="c-seg"><button class="active">Day</button><button>Week</button><button>Month</button></div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Tree</b><span>树形控件</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-tree">▾ <b>Overworld</b><br>&nbsp;&nbsp;▾ Blocks<br>&nbsp;&nbsp;&nbsp;&nbsp;Grass<br>&nbsp;&nbsp;&nbsp;&nbsp;Stone</div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Empty</b><span>空状态</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-empty">No blocks found</div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Image</b><span>图片</span></header>
+      <div class="demo">
+        <img class="c-img" src="../assets/gui/inventory.png" alt="gui preview">
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="group">
+  <h2 class="group-title">反馈 · Feedback</h2>
+  <div class="comps">
+    <article class="comp">
+      <header><b>Alert</b><span>警告提示</span></header>
+      <div class="demo" style="width:100%;flex-direction:column;align-items:stretch">
+        <div class="c-alert">A new block was registered.</div>
+        <div class="c-alert warn">Texture missing, using fallback.</div>
+        <div class="c-alert error">Failed to load chunk.</div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Modal</b><span>对话框</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-modal">
+          <header>Delete this block?</header>
+          <p>This action cannot be undone.</p>
+          <footer><button class="c-btn">Cancel</button><button class="c-btn danger">Delete</button></footer>
+        </div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Message / Toast</b><span>全局提示</span></header>
+      <div class="demo">
+        <span class="c-toast">Saved successfully</span>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Notification</b><span>通知提醒</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-notice"><b>Build finished</b>3 textures were updated.</div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Tooltip</b><span>文字提示</span></header>
+      <div class="demo" style="padding-top:26px">
+        <div class="c-tip show">Hover me<span>Diamond Pickaxe · 1561 uses</span></div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Progress</b><span>进度条</span></header>
+      <div class="demo" style="width:100%;flex-direction:column;align-items:stretch">
+        <div class="c-progress"><div class="c-bar"><i style="width:62%"></i></div></div>
+        <div class="c-progress"><div class="c-bar gold"><i style="width:88%"></i></div></div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Skeleton</b><span>骨架屏</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-skel"><i></i><i></i><i></i></div>
+      </div>
+    </article>
+    <article class="comp">
+      <header><b>Result</b><span>结果页</span></header>
+      <div class="demo" style="width:100%">
+        <div class="c-result"><img src="../assets/item-icons/emerald.png" alt="success">Operation successful</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+</body>
+</html>
