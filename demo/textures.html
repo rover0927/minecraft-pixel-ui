@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<!--
+  材质贴图 · Material Textures
+  演示 minecraft-pixel-ui 技能里的方块贴图如何用 CSS 类复用：
+  - .mc-tex 提供像素化底图，.mc-tex--<block> 只负责换贴图；
+  - 点击贴图在「单块」与「平铺」之间切换，方便检查接缝；
+  - 3D 方块直接复用技能里的 minecraft-blocks.css / blocks.js。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>材质贴图 · Material Textures</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='5' fill='%236ab84a'/%3E%3Crect y='5' width='16' height='11' fill='%23866043'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/minecraft-blocks.css">
+  <style>
+    :root {
+      --mc-panel: #38302a;
+      --mc-card: #2a231c;
+      --mc-line: #120e0a;
+      --mc-text: #e8e2d4;
+      --mc-dim: #b3a993;
+      --mc-grass: #6ab84a;
+      --mc-edge-light: rgba(255, 255, 255, 0.14);
+      --mc-edge-dark: rgba(0, 0, 0, 0.45);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { image-rendering: pixelated; }
+    body {
+      min-height: 100vh;
+      padding: 32px 20px 48px;
+      font-family: "Courier New", "Microsoft YaHei", "PingFang SC", monospace;
+      color: var(--mc-text);
+      background-color: #241d16;
+      background-image:
+        linear-gradient(rgba(12, 9, 6, 0.6), rgba(12, 9, 6, 0.6)),
+        url("../assets/block-textures/石头.png");
+      background-size: cover, 64px 64px;
+      background-attachment: fixed, scroll;
+    }
+
+    .site-header { max-width: 1180px; margin: 0 auto 30px; text-align: center; }
+    h1 {
+      font-size: clamp(22px, 3.2vw, 32px);
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: #f4f1e6;
+      text-shadow: 3px 3px 0 #2b1d10;
+    }
+    .subtitle {
+      margin-top: 14px;
+      font-size: 12px;
+      line-height: 1.9;
+      color: var(--mc-dim);
+      text-shadow: 1px 1px 0 #000;
+    }
+    .subtitle b { color: var(--mc-grass); font-weight: 400; }
+
+    .hero-cubes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 26px;
+      margin-top: 22px;
+      padding: 18px 8px 6px;
+      background: rgba(26, 21, 16, 0.55);
+      border: 2px solid var(--mc-line);
+    }
+
+    .section {
+      max-width: 1180px;
+      margin: 0 auto 28px;
+      padding: 24px 22px 26px;
+      background-color: var(--mc-panel);
+      background-image: url("../assets/block-textures/石头.png");
+      background-size: 64px 64px;
+      background-blend-mode: multiply;
+      border: 3px solid var(--mc-line);
+      box-shadow: inset 3px 3px 0 var(--mc-edge-light), inset -3px -3px 0 var(--mc-edge-dark);
+    }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 17px;
+      color: #fff;
+      text-shadow: 2px 2px 0 #14100c;
+    }
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 10px;
+      background-image: url("../assets/block-textures/草方块-顶面.png");
+      background-size: 14px 14px;
+      border: 2px solid var(--mc-line);
+      vertical-align: -1px;
+    }
+    .section-count {
+      font-size: 10px;
+      color: #14240f;
+      background: var(--mc-grass);
+      border: 1px solid var(--mc-line);
+      padding: 3px 7px;
+    }
+    .section-desc {
+      font-size: 12px;
+      line-height: 1.9;
+      color: var(--mc-dim);
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 0 #000;
+    }
+    .section-desc b { color: var(--mc-grass); font-weight: 400; }
+
+    /* ============ 贴图色卡 ============ */
+    .tex-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+      gap: 14px;
+    }
+    .tex-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 8px 9px;
+      font: inherit;
+      color: var(--mc-text);
+      cursor: pointer;
+      background: var(--mc-card);
+      border: 2px solid var(--mc-line);
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.07), inset -2px -2px 0 rgba(0, 0, 0, 0.45);
+      transition: transform 0.12s steps(2, jump-none), border-color 0.12s;
+    }
+    .tex-card:hover { transform: translateY(-3px); border-color: var(--mc-grass); }
+    .tex-card:active { transform: translateY(0); }
+
+    .tex-swatch {
+      display: block;
+      width: 88px;
+      height: 88px;
+      border: 2px solid var(--mc-line);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+    .tex-name { font-size: 11px; line-height: 1.3; text-align: center; }
+    .tex-key {
+      font-size: 9px;
+      color: var(--mc-dim);
+      letter-spacing: 0.5px;
+    }
+
+    /* 基础类：一块贴图铺满，像素化放大 */
+    .mc-tex {
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100% 100%;
+      image-rendering: pixelated;
+    }
+    /* 平铺模式：16×16 贴图按 32px 重复，用来检查接缝 */
+    .mc-tex.is-tiled {
+      background-size: 32px 32px;
+      background-repeat: repeat;
+    }
+
+    /* ============ 木板 ============ */
+    .mc-tex--oak_planks       { background-image: url("../assets/block-textures/橡木木板.png"); }
+    .mc-tex--spruce_planks    { background-image: url("../assets/block-textures/云杉木板.png"); }
+    .mc-tex--birch_planks     { background-image: url("../assets/block-textures/白桦木板.png"); }
+    .mc-tex--jungle_planks    { background-image: url("../assets/block-textures/丛林木板.png"); }
+    .mc-tex--acacia_planks    { background-image: url("../assets/block-textures/金合欢木板.png"); }
+    .mc-tex--dark_oak_planks  { background-image: url("../assets/block-textures/深色橡木木板.png"); }
+    .mc-tex--cherry_planks    { background-image: url("../assets/block-textures/樱花木板.png"); }
+    .mc-tex--bamboo_planks    { background-image: url("../assets/block-textures/竹块.png"); }
+    .mc-tex--mangrove_planks  { background-image: url("../assets/block-textures/红树木板.png"); }
+    .mc-tex--crimson_planks   { background-image: url("../assets/block-textures/绯红木板.png"); }
+    .mc-tex--warped_planks    { background-image: url("../assets/block-textures/诡异木板.png"); }
+
+    /* ============ 原木 ============ */
+    .mc-tex--oak_log       { background-image: url("../assets/block-textures/橡木原木.png"); }
+    .mc-tex--oak_log_top   { background-image: url("../assets/block-textures/橡木原木-顶面.png"); }
+    .mc-tex--spruce_log    { background-image: url("../assets/block-textures/云杉原木.png"); }
+    .mc-tex--spruce_log_top{ background-image: url("../assets/block-textures/云杉原木-顶面.png"); }
+    .mc-tex--birch_log     { background-image: url("../assets/block-textures/白桦原木.png"); }
+    .mc-tex--dark_oak_log  { background-image: url("../assets/block-textures/深色橡木原木.png"); }
+
+    /* ============ 石料与建筑 ============ */
+    .mc-tex--stone               { background-image: url("../assets/block-textures/石头.png"); }
+    .mc-tex--cobblestone         { background-image: url("../assets/block-textures/圆石.png"); }
+    .mc-tex--stone_bricks        { background-image: url("../assets/block-textures/石砖.png"); }
+    .mc-tex--mossy_stone_bricks  { background-image: url("../assets/block-textures/苔石砖.png"); }
+    .mc-tex--bricks              { background-image: url("../assets/block-textures/红砖块.png"); }
+    .mc-tex--sandstone           { background-image: url("../assets/block-textures/砂岩.png"); }
+    .mc-tex--sandstone_top       { background-image: url("../assets/block-textures/砂岩-顶面.png"); }
+    .mc-tex--quartz_block        { background-image: url("../assets/block-textures/石英块-侧面.png"); }
+    .mc-tex--quartz_block_top    { background-image: url("../assets/block-textures/石英块-顶面.png"); }
+    .mc-tex--prismarine          { background-image: url("../assets/block-textures/海晶石.png"); }
+    .mc-tex--dark_prismarine     { background-image: url("../assets/block-textures/暗海晶石.png"); }
+
+    /* ============ 自然 ============ */
+    .mc-tex--grass_top   { background-image: url("../assets/block-textures/草方块-顶面.png"); }
+    .mc-tex--grass_side  { background-image: url("../assets/block-textures/草方块-侧面.png"); }
+    .mc-tex--dirt        { background-image: url("../assets/block-textures/泥土.png"); }
+    .mc-tex--sand        { background-image: url("../assets/block-textures/沙子.png"); }
+    .mc-tex--gravel      { background-image: url("../assets/block-textures/沙砾.png"); }
+    .mc-tex--mud         { background-image: url("../assets/block-textures/泥巴.png"); }
+    .mc-tex--moss_block  { background-image: url("../assets/block-textures/苔藓块.png"); }
+
+    /* ============ 矿石 ============ */
+    .mc-tex--coal_ore      { background-image: url("../assets/block-textures/煤矿石.png"); }
+    .mc-tex--iron_ore      { background-image: url("../assets/block-textures/铁矿石.png"); }
+    .mc-tex--copper_ore    { background-image: url("../assets/block-textures/铜矿石.png"); }
+    .mc-tex--gold_ore      { background-image: url("../assets/block-textures/金矿石.png"); }
+    .mc-tex--emerald_ore   { background-image: url("../assets/block-textures/绿宝石矿石.png"); }
+    .mc-tex--lapis_ore     { background-image: url("../assets/block-textures/青金石矿石.png"); }
+    .mc-tex--redstone_ore  { background-image: url("../assets/block-textures/红石矿石.png"); }
+    .mc-tex--diamond_ore   { background-image: url("../assets/block-textures/钻石矿石.png"); }
+
+    /* ============ 3D 方块行 ============ */
+    .cube-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 22px;
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 2px dashed rgba(0, 0, 0, 0.5);
+    }
+    .cube-row .mc-cube { cursor: pointer; }
+
+    /* ============ 用法说明 ============ */
+    .usage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .usage-card {
+      padding: 16px 16px 18px;
+      background: var(--mc-card);
+      border: 2px solid var(--mc-line);
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.07), inset -2px -2px 0 rgba(0, 0, 0, 0.45);
+    }
+    .usage-card h3 { font-size: 13px; color: var(--mc-grass); margin-bottom: 10px; font-weight: 400; }
+    pre {
+      overflow-x: auto;
+      padding: 12px;
+      font-size: 11px;
+      line-height: 1.75;
+      color: #d9d2c2;
+      background: #1b1610;
+      border: 2px solid var(--mc-line);
+    }
+    pre .c { color: #7f7462; }
+    pre .k { color: #6ab84a; }
+    pre .s { color: #e0b96a; }
+    .usage-note {
+      margin-top: 14px;
+      font-size: 11px;
+      line-height: 1.9;
+      color: var(--mc-dim);
+    }
+    .usage-note code {
+      color: #e0b96a;
+      font-family: inherit;
+    }
+
+    .site-footer {
+      max-width: 1180px;
+      margin: 8px auto 0;
+      text-align: center;
+      font-size: 10px;
+      line-height: 1.9;
+      color: #8c8270;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 22px 12px 36px; }
+      .section { padding: 18px 12px 20px; }
+      .tex-grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+      .tex-swatch { width: 76px; height: 76px; }
+      .hero-cubes { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>材质贴图 · Material Textures</h1>
+    <p class="subtitle">
+      木板、原木、石料、矿石的 CSS 贴图类，一个 <b>class</b> 换一张 16×16 像素材质。<br>
+      点击任意色卡可在「单块铺满」与「32px 平铺」之间切换，用来检查接缝。
+    </p>
+    <div class="hero-cubes" id="hero-cubes"></div>
+  </header>
+
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">木板 · Wood Planks</h2>
+      <span class="section-count">11 种</span>
+    </div>
+    <p class="section-desc">
+      主建筑材质。每张都是可无缝平铺的 16×16 贴图，色卡用 <b>.mc-tex--oak_planks</b> 这类类名引用，
+      3D 方块则直接复用技能里的 <b>createMinecraftCube()</b>。
+    </p>
+    <div class="tex-grid" id="grid-wood"></div>
+    <div class="cube-row" id="cubes-wood"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">原木 · Logs</h2>
+      <span class="section-count">6 面 / 侧面</span>
+    </div>
+    <p class="section-desc">
+      原木需要区分侧面与顶面：侧面做四个立面，顶面与底面单独一张，和技能里的分面贴图规则一致。
+    </p>
+    <div class="tex-grid" id="grid-log"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">石料 · Stone &amp; Building</h2>
+      <span class="section-count">11 张</span>
+    </div>
+    <p class="section-desc">
+      石头、圆石、石砖到砂岩、石英、海晶石，纹理都带明显的像素接缝，平铺模式下最容易看出问题。
+    </p>
+    <div class="tex-grid" id="grid-building"></div>
+    <div class="cube-row" id="cubes-building"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">自然 · Natural</h2>
+      <span class="section-count">7 张</span>
+    </div>
+    <p class="section-desc">
+      草方块拆成顶面与侧面；泥土、沙子、沙砾、泥巴、苔藓块可以直接铺满整块。
+    </p>
+    <div class="tex-grid" id="grid-natural"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">矿石 · Ores</h2>
+      <span class="section-count">8 张</span>
+    </div>
+    <p class="section-desc">
+      矿石色卡保留了技能里的发光色，3D 方块可以叠加 <b>anim-glow</b> 呼吸发光。
+    </p>
+    <div class="tex-grid" id="grid-ore"></div>
+    <div class="cube-row" id="cubes-ore"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">CSS 用法 · How to use</h2>
+    </div>
+    <div class="usage-grid">
+      <div class="usage-card">
+        <h3>1 · 贴图类</h3>
+<pre><span class="c">/* 基础：铺满 + 像素化 */</span>
+<span class="k">.mc-tex</span> {
+  background-size: <span class="s">100% 100%</span>;
+  background-repeat: <span class="s">no-repeat</span>;
+  image-rendering: <span class="s">pixelated</span>;
+}
+
+<span class="c">/* 换材质只写一行 */</span>
+<span class="k">.mc-tex--oak_planks</span> {
+  background-image: <span class="s">url("../assets/block-textures/橡木木板.png")</span>;
+}</pre>
+      </div>
+      <div class="usage-card">
+        <h3>2 · 平铺检查</h3>
+<pre><span class="c">/* 16×16 贴图按 32px 重复 */</span>
+<span class="k">.mc-tex.is-tiled</span> {
+  background-size: <span class="s">32px 32px</span>;
+  background-repeat: <span class="s">repeat</span>;
+}
+
+<span class="c">/* 页面里 */</span>
+&lt;div class="mc-tex mc-tex--stone_bricks"&gt;&lt;/div&gt;</pre>
+        <p class="usage-note">放大后用 <code>is-tiled</code> 看四条边是否能接上；接不上说明贴图本身不可平铺。</p>
+      </div>
+      <div class="usage-card">
+        <h3>3 · 3D 方块</h3>
+<pre><span class="c">/* 贴图目录：默认 ../mc中文素材/ */</span>
+window.MC_TEX_PATH = <span class="s">"assets/block-textures/"</span>;
+
+<span class="k">const</span> stage = createMinecraftCube(
+  <span class="s">"oak_planks"</span>, { size: <span class="s">"md"</span> }
+);
+bindClickFlip(stage);</pre>
+        <p class="usage-note">技能包里的 <code>blocks.js</code> 会读取 <code>MC_TEX_PATH</code>，把贴图目录指到页面的贴图目录；本页用 <code>../assets/block-textures/</code>。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    素材：Minecraft 官方 16×16 贴图 · 仅作学习与演示使用<br>
+    minecraft-pixel-ui · Material Texture Demo
+  </footer>
+
+  <script>window.MC_TEX_PATH = "../assets/block-textures/";</script>
+  <script src="../assets/blocks.js"></script>
+  <script>
+    const WOOD = [
+      ["oak_planks", "橡木木板"], ["spruce_planks", "云杉木板"], ["birch_planks", "白桦木板"],
+      ["jungle_planks", "丛林木板"], ["acacia_planks", "金合欢木板"], ["dark_oak_planks", "深色橡木木板"],
+      ["cherry_planks", "樱花木板"], ["bamboo_planks", "竹块"], ["mangrove_planks", "红树木板"],
+      ["crimson_planks", "绯红木板"], ["warped_planks", "诡异木板"]
+    ];
+    const LOGS = [
+      ["oak_log", "橡木原木"], ["oak_log_top", "橡木顶面"],
+      ["spruce_log", "云杉原木"], ["spruce_log_top", "云杉顶面"],
+      ["birch_log", "白桦原木"], ["dark_oak_log", "深色橡木原木"]
+    ];
+    const BUILDING = [
+      ["stone", "石头"], ["cobblestone", "圆石"], ["stone_bricks", "石砖"],
+      ["mossy_stone_bricks", "苔石砖"], ["bricks", "红砖块"],
+      ["sandstone", "砂岩"], ["sandstone_top", "砂岩顶面"],
+      ["quartz_block", "石英块"], ["quartz_block_top", "石英顶面"],
+      ["prismarine", "海晶石"], ["dark_prismarine", "暗海晶石"]
+    ];
+    const NATURAL = [
+      ["grass_top", "草方块顶面"], ["grass_side", "草方块侧面"],
+      ["dirt", "泥土"], ["sand", "沙子"], ["gravel", "沙砾"],
+      ["mud", "泥巴"], ["moss_block", "苔藓块"]
+    ];
+    const ORES = [
+      ["coal_ore", "煤矿石", "#555555"], ["iron_ore", "铁矿石", "#d8af8a"],
+      ["copper_ore", "铜矿石", "#e08a5a"], ["gold_ore", "金矿石", "#ffd700"],
+      ["emerald_ore", "绿宝石矿石", "#17dd62"], ["lapis_ore", "青金石矿石", "#2b6cff"],
+      ["redstone_ore", "红石矿石", "#ff3030"], ["diamond_ore", "钻石矿石", "#4fe9e9"]
+    ];
+
+    function renderSwatches(containerId, items) {
+      const box = document.getElementById(containerId);
+      items.forEach(([key, name, glow]) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "tex-card";
+        card.title = `${name} · 点击切换平铺`;
+        card.setAttribute("aria-label", `${name}，点击切换平铺`);
+
+        const swatch = document.createElement("span");
+        swatch.className = `tex-swatch mc-tex mc-tex--${key}`;
+        if (glow) swatch.style.boxShadow = `0 0 14px ${glow}, inset 0 0 0 1px rgba(255,255,255,.12)`;
+
+        const cn = document.createElement("span");
+        cn.className = "tex-name";
+        cn.textContent = name;
+
+        const code = document.createElement("span");
+        code.className = "tex-key";
+        code.textContent = key;
+
+        card.append(swatch, cn, code);
+        card.addEventListener("click", () => swatch.classList.toggle("is-tiled"));
+        box.appendChild(card);
+      });
+    }
+
+    function renderCubes(containerId, keys, size = "md") {
+      const box = document.getElementById(containerId);
+      keys.forEach(key => {
+        const stage = createMinecraftCube(key, { size });
+        if (!stage) return;
+        stage.classList.add("hover-lift");
+        bindClickFlip(stage);
+        box.appendChild(stage);
+      });
+    }
+
+    renderSwatches("grid-wood", WOOD);
+    renderSwatches("grid-log", LOGS);
+    renderSwatches("grid-building", BUILDING);
+    renderSwatches("grid-natural", NATURAL);
+    renderSwatches("grid-ore", ORES);
+
+    renderCubes("hero-cubes", ["oak_planks", "stone_bricks", "diamond_ore", "grass"], "lg");
+    renderCubes("cubes-wood", ["oak_planks", "spruce_planks", "birch_planks", "dark_oak_planks", "cherry_planks", "crimson_planks"]);
+    renderCubes("cubes-building", ["stone", "cobblestone", "stone_bricks", "sandstone", "quartz_block", "prismarine"]);
+    renderCubes("cubes-ore", ["coal_ore", "iron_ore", "gold_ore", "diamond_ore", "emerald_ore", "redstone_ore"]);
+  </script>
+</body>
+</html>

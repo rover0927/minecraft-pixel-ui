@@ -99,6 +99,12 @@ Block hero + inventory-style toolbox + project cards, showing how the skill comp
 
 ![Homepage inventory](docs/showcase/home-inventory.png)
 
+### Material textures
+
+43 vanilla 16×16 textures exposed as `.mc-tex--<block>` classes; click any swatch to toggle 32px tiling and check seams.
+
+![Material texture swatches](docs/showcase/textures.png)
+
 ## Contents
 
 | Path | Description |
@@ -109,6 +115,8 @@ Block hero + inventory-style toolbox + project cards, showing how the skill comp
 | `assets/index-template.html` | MC-themed page skeleton with four gallery sections wired up |
 | `assets/item-icons/` | 82 16×16 vanilla item icons for inventory / crafting / backpack UI |
 | `assets/gui/` | 4 256×256 container backgrounds: inventory, crafting table, furnace, generic 54-slot |
+| `assets/block-textures/` | 43 16×16 block textures: 11 planks, 6 logs, 11 building, 7 natural, 8 ores |
+| [demo/textures.html](./demo/textures.html) | Material swatches with `.mc-tex` classes, tiling check, and 3D blocks |
 | [demo/components.html](./demo/components.html) | Component gallery: ~44 MC-styled components in 6 groups |
 | `docs/showcase/` | Homepage and component screenshots used by this README |
 | [references/cube-framework.md](./references/cube-framework.md) | DOM contract, API, animation patterns, Q-style rounding layer |
@@ -122,6 +130,7 @@ Block hero + inventory-style toolbox + project cards, showing how the skill comp
 - Vanilla 16×16 textures, integer scaling, per-face shading for orientation
 - Q-style rounded blocks: only the silhouette is rounded, the front vertex stays sharp, textured cores seal the gaps
 - Inventory / backpack / crafting-table UI with vanilla-style slots
+- Material texture utility classes: `.mc-tex` base + `.mc-tex--<block>` per-texture, with a tiling check class
 - Pixel-art takes on common front-end components (buttons, forms, tables, modals, alerts…)
 - Documented fixes for face misalignment, `filter` flattening, animations that never reset, corner notches, click-flip lifecycle
 
@@ -131,7 +140,8 @@ Block hero + inventory-style toolbox + project cards, showing how the skill comp
 2. Point `TEX_PATH` at the top of `blocks.js` to your texture folder.
 3. Start from `assets/index-template.html` and call `createMinecraftCube(key, opts)`.
 4. For inventory UI, copy `assets/item-icons/` into your page assets and lay out `.mc-slot` cells.
-5. Use `demo/components.html` as the style reference for components.
+5. For material swatches, copy `assets/block-textures/` and add `.mc-tex--<block>` classes; see `demo/textures.html`.
+6. Use `demo/components.html` as the style reference for components.
 
 Full workflow: [SKILL.md](./SKILL.md).
 

@@ -16,11 +16,13 @@ description: "构建、扩展与排障 Minecraft 风格的纯 CSS 3D 方块演�
 - `assets/index-template.html` — 带 MC 像素主题的页面骨架，含四个画廊区块的引导脚本范例。
 - `assets/item-icons/` — 82 个 16×16 官方物品图标（英文文件名），可直接用于物品栏、合成表、背包 UI。
 - `assets/gui/` — 4 张 256×256 容器背景（背包、工作台、熔炉、54 格通用容器），可当面板底图。
+- `assets/block-textures/` — 43 张 16×16 方块贴图（木板 11、原木 6、石料 11、自然 7、矿石 8），中文文件名，可直接平铺或走 CSS 材质类。
+- `demo/textures.html` — 材质贴图色卡 + 3D 方块示例页，含 `.mc-tex` 类与平铺检查。
 
 ## 参考文档（按需读取）
 
 - 改立方体结构、加动画、查 DOM/API/类名约定 → 读 `references/cube-framework.md`
-- 用物品图标、物品栏槽位、GUI 容器背景，或从 client-extra 补素材 → 读 `references/asset-catalog.md`
+- 用物品图标、物品栏槽位、GUI 容器背景、方块贴图材质类，或从 client-extra / mc中文素材 补素材 → 读 `references/asset-catalog.md`
 - 改页面外观、布局、配色、字体、栅格 → 读 `references/ui-theme.md`
 - 排查面错位、拍平、动画不恢复、贴图灰度等问题 → 读 `references/pitfalls.md`，先核对已验证结论，避免回退。
 
@@ -38,6 +40,14 @@ description: "构建、扩展与排障 Minecraft 风格的纯 CSS 3D 方块演�
 1. 贴图放入素材目录；`faces` 为字符串表示六面同图，对象 `{top, bottom, side, front, back, left, right}` 分面；`side` 兜底四个侧面。
 2. 需要发光时加 `glow: "#hex"`，框架会把颜色写进 `--mc-glow-color`。
 3. 在目标容器里 `createMinecraftCube` 并按需绑定点击翻转。
+
+### 使用方块贴图（CSS 材质类）
+
+1. 贴图从 `assets/block-textures/` 取，全部 16×16；展示只做整数倍放大并配 `image-rendering: pixelated`。
+2. 基础类 `.mc-tex` 负责像素化铺满，修饰类 `.mc-tex--oak_planks` 只写 `background-image`；类名用官方 block id（下划线命名）。
+3. 检查接缝时切到平铺：`background-size: 32px 32px; background-repeat: repeat`，16px 贴图按 2 倍重复最容易看出边界。
+4. 原木侧画与顶面是两张图，3D 方块用 `faces` 对象分面；贴图目录通过 `window.MC_TEX_PATH` 覆盖，默认仍为 `../mc中文素材/`。
+5. 43 张清单、完整类名与补素材命令见 `references/asset-catalog.md` 的「方块贴图与材质类」，示例页 `demo/textures.html`。
 
 ### 追加一个动画
 
@@ -76,3 +86,4 @@ description: "构建、扩展与排障 Minecraft 风格的纯 CSS 3D 方块演�
 - `filter`、`backdrop-filter` 不挂在 `.mc-cube` 及其祖先分组上，只挂 `.face` 叶子，避免 3D 分组扁平化。
 - 视角倾斜只放在 `.mc-iso-tilt` 层，动画 `transform` 只作用 `.mc-cube` 层。
 - 圆角是页面层扩展：只加 `.face` 的 `border-radius`、额外挂 `.q-core` 子节点，不改框架 CSS 与生成函数签名；近顶点直角映射依赖 `rotateX(-20deg) rotateY(-30deg)`，换视角需重算。
+- 贴图目录只通过 `window.MC_TEX_PATH` 覆盖，不改 `blocks.js` 顶部默认值，避免破坏其他页面。

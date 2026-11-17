@@ -3,7 +3,7 @@
    每个方块定义六面贴图，支持统一贴图或分面贴图
    ============================================================ */
 
-const TEX_PATH = "../mc中文素材/";
+const TEX_PATH = (typeof window !== "undefined" && window.MC_TEX_PATH) || "../mc中文素材/";
 
 /**
  * 方块注册表

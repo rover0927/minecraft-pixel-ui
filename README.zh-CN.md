@@ -99,6 +99,12 @@
 
 ![个人主页物品栏](docs/showcase/home-inventory.png)
 
+### 材质贴图
+
+43 张原版 16×16 贴图，用 `.mc-tex--<block>` 类切换；点击色卡可切到 32px 平铺，检查接缝。
+
+![材质贴图色卡](docs/showcase/textures.png)
+
 ## 内容
 
 | 路径 | 说明 |
@@ -109,6 +115,8 @@
 | `assets/index-template.html` | 带 MC 像素主题的页面骨架，含四个画廊区块的引导脚本 |
 | `assets/item-icons/` | 82 个 16×16 官方物品图标，用于物品栏、合成表、背包 UI |
 | `assets/gui/` | 4 张 256×256 容器背景：背包、工作台、熔炉、54 格通用容器 |
+| `assets/block-textures/` | 43 张 16×16 方块贴图：木板 11、原木 6、石料 11、自然 7、矿石 8 |
+| [demo/textures.html](./demo/textures.html) | 材质色卡：`.mc-tex` 类、平铺检查、3D 方块 |
 | [demo/components.html](./demo/components.html) | 组件展示页：6 组约 44 个 MC 风格组件 |
 | `docs/showcase/` | README 使用的主页与组件截图 |
 | [references/cube-framework.md](./references/cube-framework.md) | DOM 契约、API、动画写法、Q 版圆角扩展层 |
@@ -122,6 +130,7 @@
 - 原版 16×16 贴图，整数倍像素缩放，六面朝向明暗
 - Q 版圆角方块：只磨外轮廓，近顶点保留直角，贴图内芯补角缝
 - 物品栏 / 背包 / 合成台 UI，槽位复刻原版样式
+- 方块贴图材质类：`.mc-tex` 基础类 + `.mc-tex--<block>` 单材质类，附平铺接缝检查
 - 常见前端组件（按钮、表单、表格、弹窗、提示等）的像素风复刻
 - 已排查：面错位、filter 拍平、动画不恢复、圆角凹口、点击翻转生命周期
 
@@ -131,7 +140,8 @@
 2. 把素材目录填进 `blocks.js` 顶部的 `TEX_PATH`。
 3. 以 `assets/index-template.html` 为骨架，用 `createMinecraftCube(key, opts)` 生成方块。
 4. 需要物品栏时，把 `assets/item-icons/` 复制到页面资源目录，按 `.mc-slot` 摆放。
-5. 组件外观参考 `demo/components.html` 里的样式与结构。
+5. 需要材质色卡时，复制 `assets/block-textures/` 并补 `.mc-tex--<block>` 类，参考 `demo/textures.html`。
+6. 组件外观参考 `demo/components.html` 里的样式与结构。
 
 更完整的流程见 [SKILL.md](./SKILL.md) 的「核心工作流」。
 
