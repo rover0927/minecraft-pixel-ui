@@ -16,7 +16,12 @@
 
 ---
 
-**Jump to components:** [Overview](#components) · [Quick reference](#component-quick-reference) · [Basics](#general--basics) · [Layout](#layout) · [Navigation](#navigation) · [Data Entry](#data-entry-forms) · [Data Display](#data-display) · [Feedback](#feedback) · [Live demo](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html)
+**Demo pages:**
+
+- [components.html](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html) — 44 MC-style components across 6 groups
+- [textures.html](https://rover0927.github.io/minecraft-pixel-ui/demo/textures.html) — 43 material swatches, click to toggle tiling
+- [sounds.html](https://rover0927.github.io/minecraft-pixel-ui/demo/sounds.html) — 27 vanilla sounds with volume, mute and stop
+- [palette.html](https://rover0927.github.io/minecraft-pixel-ui/demo/palette.html) — six sidebar material pairings
 
 ## Components
 

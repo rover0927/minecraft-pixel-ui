@@ -16,7 +16,12 @@
 
 ---
 
-**组件快捷跳转：** [组件总览](#组件展示--components) · [中英速查](#组件中英文速查) · [基础](#通用--基础) · [布局](#布局) · [导航](#导航) · [数据录入](#数据录入表单) · [数据展示](#数据展示) · [反馈](#反馈) · [在线组件页](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html)
+**演示页面：**
+
+- [components.html](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html) — 6 组 44 个 MC 风格组件
+- [textures.html](https://rover0927.github.io/minecraft-pixel-ui/demo/textures.html) — 43 张材质色卡，点击切换平铺
+- [sounds.html](https://rover0927.github.io/minecraft-pixel-ui/demo/sounds.html) — 27 个原版音效，带音量、静音与停止
+- [palette.html](https://rover0927.github.io/minecraft-pixel-ui/demo/palette.html) — 6 套侧栏材质搭配
 
 ## 组件展示 · Components
 
