@@ -111,6 +111,12 @@ Block hero + inventory-style toolbox + project cards, showing how the skill comp
 
 ![Sound board demo](docs/showcase/sounds.png)
 
+### Material pairings
+
+Six ready-made sidebar recipes — stone bricks, dark oak, sandstone, nether, prismarine and bamboo/cherry — each previewed as a mock sidebar with its accent texture and parts list.
+
+![Material pairing recipes](docs/showcase/palette.png)
+
 ## Contents
 
 | Path | Description |
@@ -122,6 +128,7 @@ Block hero + inventory-style toolbox + project cards, showing how the skill comp
 | [demo/components.html](./demo/components.html) | Component gallery: ~44 MC-styled components in 6 groups |
 | [demo/textures.html](./demo/textures.html) | Material swatches with `.mc-tex` classes, tiling check, and 3D blocks |
 | [demo/sounds.html](./demo/sounds.html) | Sound board: 27 vanilla sounds, click any card to play and hear it |
+| [demo/palette.html](./demo/palette.html) | Material pairing preview: six sidebar recipes with live texture mockups |
 | `assets/item-icons/` | 82 16×16 vanilla item icons for inventory / crafting / backpack UI |
 | `assets/gui/` | 4 256×256 container backgrounds: inventory, crafting table, furnace, generic 54-slot |
 | `assets/block-textures/` | 43 16×16 block textures: 11 planks, 6 logs, 11 building, 7 natural, 8 ores |
@@ -130,6 +137,7 @@ Block hero + inventory-style toolbox + project cards, showing how the skill comp
 | [references/cube-framework.md](./references/cube-framework.md) | DOM contract, API, animation patterns, Q-style rounding layer |
 | [references/ui-theme.md](./references/ui-theme.md) | Page theme: palette, typography, panels, grid |
 | [references/asset-catalog.md](./references/asset-catalog.md) | Asset layout and item-icon usage |
+| [references/palette-recipes.md](./references/palette-recipes.md) | Texture pairing recipes for sidebars, panels, cards |
 | [references/pitfalls.md](./references/pitfalls.md) | Reproduced issues: symptoms, root causes, fixes |
 
 ## Features

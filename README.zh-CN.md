@@ -111,6 +111,12 @@
 
 ![音效试听页](docs/showcase/sounds.png)
 
+### 材质搭配
+
+6 套现成的侧栏材质组合——石砖、深色橡木、砂岩、下界、海晶、竹樱——每套都做成可对照的模拟侧栏，附强调贴图与部件清单。
+
+![材质搭配预览](docs/showcase/palette.png)
+
 ## 内容
 
 | 路径 | 说明 |
@@ -122,6 +128,7 @@
 | [demo/components.html](./demo/components.html) | 组件展示页：6 组约 44 个 MC 风格组件 |
 | [demo/textures.html](./demo/textures.html) | 材质色卡：`.mc-tex` 类、平铺检查、3D 方块 |
 | [demo/sounds.html](./demo/sounds.html) | 音效试听页：27 个原版音效，点击卡片即可播放 |
+| [demo/palette.html](./demo/palette.html) | 材质搭配预览：6 套侧栏组合的贴图实拍与部件清单 |
 | `assets/item-icons/` | 82 个 16×16 官方物品图标，用于物品栏、合成表、背包 UI |
 | `assets/gui/` | 4 张 256×256 容器背景：背包、工作台、熔炉、54 格通用容器 |
 | `assets/block-textures/` | 43 张 16×16 方块贴图：木板 11、原木 6、石料 11、自然 7、矿石 8 |
@@ -130,6 +137,7 @@
 | [references/cube-framework.md](./references/cube-framework.md) | DOM 契约、API、动画写法、Q 版圆角扩展层 |
 | [references/ui-theme.md](./references/ui-theme.md) | 页面主题：配色、字体、面板、栅格 |
 | [references/asset-catalog.md](./references/asset-catalog.md) | 素材目录与物品图标用法 |
+| [references/palette-recipes.md](./references/palette-recipes.md) | 侧栏 / 面板 / 卡片的材质搭配方案 |
 | [references/pitfalls.md](./references/pitfalls.md) | 已定位问题的现象、根因与修法 |
 
 ## 能做什么

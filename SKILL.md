@@ -17,6 +17,7 @@ description: "构建、扩展与排障 Minecraft 风格的纯 CSS 3D 方块演�
 - `demo/components.html` — 组件样式参考页：42 张卡，覆盖基础、布局、导航、表单、展示、反馈 6 组，纯 HTML/CSS，同时是三页共用的页面主题基准。
 - `demo/textures.html` — 材质贴图色卡 + 3D 方块示例页，含 `.mc-tex` 类与平铺检查。
 - `demo/sounds.html` — 音效试听页：27 个精选音效，点击播放，带音量、静音、停止与时长预读。
+- `demo/palette.html` — 材质搭配预览：6 套侧栏组合，含模拟侧栏 + 内容区 + 贴图清单，另附橡木/深色橡木对照。
 - `assets/item-icons/` — 82 个 16×16 官方物品图标（英文文件名），可直接用于物品栏、合成表、背包 UI。
 - `assets/gui/` — 4 张 256×256 容器背景（背包、工作台、熔炉、54 格通用容器），可当面板底图。
 - `assets/block-textures/` — 43 张 16×16 方块贴图（木板 11、原木 6、石料 11、自然 7、矿石 8），中文文件名，可直接平铺或走 CSS 材质类。
@@ -27,6 +28,7 @@ description: "构建、扩展与排障 Minecraft 风格的纯 CSS 3D 方块演�
 - 改立方体结构、加动画、查 DOM/API/类名约定 → 读 `references/cube-framework.md`
 - 用物品图标、物品栏槽位、GUI 容器背景、方块贴图材质类、音效素材，或从 client-extra / mc中文素材 / 音效库 补素材 → 读 `references/asset-catalog.md`
 - 改页面外观、布局、配色、字体、栅格 → 读 `references/ui-theme.md`
+- 挑侧栏/面板/卡片贴图、用现成的材质搭配方案 → 读 `references/palette-recipes.md`
 - 排查面错位、拍平、动画不恢复、贴图灰度等问题 → 读 `references/pitfalls.md`，先核对已验证结论，避免回退。
 
 ## 核心工作流

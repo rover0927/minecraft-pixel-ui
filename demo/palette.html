@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<!--
+  材质搭配预览 · Palette Recipes
+  对应 references/palette-recipes.md 的 6 套侧栏 / 面板组合：
+  - 每套方案左侧是模拟侧栏（底图 + 激活态），右侧是内容区（标题条 + 占位）；
+  - 底部列出底图 / 强调 / 点缀三张贴图，方便直接对照文件；
+  - 最后附橡木木板与深色橡木的平铺对比，说明为什么橡木不适合做大面积侧栏。
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>材质搭配预览 · Palette Recipes</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='5' fill='%236ab84a'/%3E%3Crect y='5' width='16' height='11' fill='%23866043'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --mc-panel: #38302a;
+    --mc-card: #2a231c;
+    --mc-line: #120e0a;
+    --mc-text: #e8e2d4;
+    --mc-dim: #b3a993;
+    --mc-grass: #6ab84a;
+    --mc-gold: #e8c14a;
+    --mc-edge-light: rgba(255, 255, 255, 0.14);
+    --mc-edge-dark: rgba(0, 0, 0, 0.45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { image-rendering: pixelated; }
+  body {
+    min-height: 100vh;
+    padding: 32px 20px 48px;
+    font-family: "Courier New", "Microsoft YaHei", "PingFang SC", monospace;
+    font-size: 12px;
+    color: var(--mc-text);
+    background-color: #241d16;
+    background-image:
+      linear-gradient(rgba(12, 9, 6, 0.6), rgba(12, 9, 6, 0.6)),
+      url("../assets/block-textures/石头.png");
+    background-size: cover, 64px 64px;
+    background-attachment: fixed, scroll;
+  }
+
+  /* ============ 页头 ============ */
+  .site-header { max-width: 1180px; margin: 0 auto 28px; text-align: center; }
+  h1 {
+    font-size: clamp(22px, 3.2vw, 32px);
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #f4f1e6;
+    text-shadow: 3px 3px 0 #2b1d10;
+  }
+  .subtitle {
+    margin-top: 14px;
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--mc-dim);
+    text-shadow: 1px 1px 0 #000;
+  }
+  .subtitle b { color: var(--mc-grass); font-weight: 400; }
+
+  /* ============ 区块面板 ============ */
+  .section {
+    max-width: 1180px;
+    margin: 0 auto 26px;
+    padding: 22px 22px 24px;
+    background-color: var(--mc-panel);
+    background-image: url("../assets/block-textures/石头.png");
+    background-size: 64px 64px;
+    background-blend-mode: multiply;
+    border: 3px solid var(--mc-line);
+    box-shadow: inset 3px 3px 0 var(--mc-edge-light), inset -3px -3px 0 var(--mc-edge-dark);
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 17px;
+    font-weight: 400;
+    color: #fff;
+    text-shadow: 2px 2px 0 #14100c;
+  }
+  .section-title::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+    background-image: url("../assets/block-textures/草方块-顶面.png");
+    background-size: 14px 14px;
+    border: 2px solid var(--mc-line);
+    vertical-align: -1px;
+  }
+  .section-count {
+    font-size: 10px;
+    color: #14240f;
+    background: var(--mc-grass);
+    border: 1px solid var(--mc-line);
+    padding: 3px 7px;
+  }
+  .section-desc {
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--mc-dim);
+    margin-bottom: 18px;
+    text-shadow: 1px 1px 0 #000;
+  }
+
+  /* ============ 方案栅格 ============ */
+  .recipes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+    gap: 16px;
+  }
+  .recipe {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 12px;
+    background: var(--mc-card);
+    border: 2px solid var(--mc-line);
+    box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.07), inset -2px -2px 0 rgba(0, 0, 0, 0.45);
+  }
+  .recipe-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 7px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+  }
+  .recipe-head b { font-size: 12px; font-weight: 400; color: #fff; text-shadow: 1px 1px 0 #000; }
+  .recipe-head .tone { font-size: 10px; color: var(--mc-dim); }
+  .recipe-head .rec {
+    margin-left: auto;
+    font-size: 9px;
+    color: #14240f;
+    background: var(--mc-gold);
+    border: 1px solid var(--mc-line);
+    padding: 2px 6px;
+  }
+
+  /* ============ 预览窗 ============ */
+  .preview {
+    display: grid;
+    grid-template-columns: 172px 1fr;
+    min-height: 212px;
+    border: 2px solid var(--mc-line);
+    background: #1a1410;
+  }
+  .sb {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px 9px;
+    background-color: var(--sb-base);
+    background-image: var(--sb-tex);
+    background-size: 32px 32px;
+    background-blend-mode: multiply;
+    border-right: 2px solid var(--mc-line);
+    color: var(--sb-fg);
+  }
+  .sb-brand {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+    text-shadow: 1px 1px 0 var(--sb-shadow, rgba(0, 0, 0, 0.55));
+  }
+  .sb-brand i {
+    width: 14px;
+    height: 14px;
+    background-image: url("../assets/block-textures/草方块-顶面.png");
+    background-size: 14px 14px;
+    border: 2px solid var(--mc-line);
+    flex: none;
+  }
+  .sb nav { display: flex; flex-direction: column; gap: 3px; }
+  .sb a {
+    display: block;
+    padding: 6px 8px;
+    font-size: 11px;
+    color: var(--sb-dim);
+    text-decoration: none;
+    border: 2px solid transparent;
+    text-shadow: 1px 1px 0 var(--sb-shadow, rgba(0, 0, 0, 0.45));
+  }
+  .sb a.active {
+    color: var(--sb-active-fg);
+    background-color: var(--sb-accent-base);
+    background-image: var(--sb-accent-tex);
+    background-size: 32px 32px;
+    background-blend-mode: multiply;
+    border-color: var(--mc-line);
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.18), inset -1px -1px 0 rgba(0, 0, 0, 0.4);
+    text-shadow: 1px 1px 0 var(--sb-active-shadow, rgba(0, 0, 0, 0.35));
+  }
+  .sb-foot { margin-top: auto; font-size: 9px; color: var(--sb-dim); text-shadow: 1px 1px 0 var(--sb-shadow, rgba(0, 0, 0, 0.45)); }
+
+  .content { padding: 12px; background: #1f1913; min-width: 0; }
+  .content-title {
+    padding: 6px 8px;
+    font-size: 11px;
+    color: var(--ct-title-fg, #fff);
+    background-color: var(--sb-accent-base);
+    background-image: var(--sb-accent-tex);
+    background-size: 32px 32px;
+    background-blend-mode: multiply;
+    border: 2px solid var(--mc-line);
+    text-shadow: 1px 1px 0 var(--ct-shadow, rgba(0, 0, 0, 0.4));
+  }
+  .content-line { height: 8px; margin-top: 9px; background: #3a3027; }
+  .content-line.short { width: 62%; }
+  .content-cards { display: flex; gap: 6px; margin-top: 12px; }
+  .content-cards span {
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--mc-line);
+    background-size: 100% 100%;
+  }
+  .content-cards .t-base { background-image: var(--sb-tex); }
+  .content-cards .t-accent { background-image: var(--sb-accent-tex); }
+  .content-cards .t-dot { background-image: var(--sb-dot-tex); }
+
+  /* ============ 部件清单 ============ */
+  .parts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .parts div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 5px 6px;
+    font-size: 10px;
+    color: var(--mc-dim);
+    background: #221b15;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .parts i {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    border: 1px solid var(--mc-line);
+    background-size: 100% 100%;
+  }
+  .parts b { font-weight: 400; color: var(--mc-text); white-space: nowrap; }
+  .parts span { color: #7d7362; white-space: nowrap; }
+
+  /* ============ 橡木对比 ============ */
+  .compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .sample { background: #221b15; border: 2px solid var(--mc-line); padding: 10px; }
+  .sample h3 { font-size: 12px; font-weight: 400; color: #fff; margin-bottom: 8px; }
+  .sample h3 span { font-size: 10px; color: var(--mc-dim); }
+  .sample-swatch {
+    height: 96px;
+    border: 2px solid var(--mc-line);
+    background-color: var(--s-base);
+    background-size: 32px 32px;
+    background-blend-mode: multiply;
+  }
+  .sample p { margin-top: 8px; font-size: 11px; line-height: 1.7; color: var(--mc-dim); }
+  .sample p b { color: var(--mc-grass); font-weight: 400; }
+
+  .site-footer {
+    max-width: 1180px;
+    margin: 8px auto 0;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.9;
+    color: #8c8270;
+    text-shadow: 1px 1px 0 #000;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 22px 12px 36px; }
+    .section { padding: 18px 12px 20px; }
+    .recipes { grid-template-columns: 1fr; }
+    .preview { grid-template-columns: 136px 1fr; }
+    .parts { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>材质搭配预览</h1>
+  <p class="subtitle">
+    6 套侧栏 / 面板材质组合，<b>先看效果再改 CSS</b><br>
+    每张卡左边是侧栏底图与激活态，右边是内容区标题条；底部列出用到的三张贴图
+  </p>
+</header>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">侧栏方案 · Sidebar Recipes</h2>
+    <span class="section-count">6 套</span>
+  </div>
+  <p class="section-desc">贴图全部来自 <b>assets/block-textures/</b>，平铺 32px、multiply 压暗；完整说明与可复制 CSS 见 references/palette-recipes.md。</p>
+  <div class="recipes">
+
+    <article class="recipe">
+      <div class="recipe-head"><b>01 冷灰石砖</b><span class="tone">工具型 · 稳</span><span class="rec">推荐</span></div>
+      <div class="preview" style="--sb-base:#2a2620;--sb-fg:#e8e2d4;--sb-dim:#b3a993;--sb-active-fg:#ffffff;--sb-accent-base:#33402c;--sb-tex:url('../assets/block-textures/石砖.png');--sb-accent-tex:url('../assets/block-textures/苔石砖.png');--sb-dot-tex:url('../assets/block-textures/绿宝石矿石.png')">
+        <aside class="sb">
+          <div class="sb-brand"><i></i>MINECRAFT</div>
+          <nav>
+            <a class="active" href="#">材质 Material</a>
+            <a href="#">方块 Blocks</a>
+            <a href="#">音效 Sounds</a>
+            <a href="#">设置 Settings</a>
+          </nav>
+          <div class="sb-foot">v1.20.1</div>
+        </aside>
+        <div class="content">
+          <div class="content-title">材质贴图</div>
+          <div class="content-line"></div>
+          <div class="content-line short"></div>
+          <div class="content-cards"><span class="t-base"></span><span class="t-accent"></span><span class="t-dot"></span></div>
+        </div>
+      </div>
+      <div class="parts">
+        <div><i style="background-image:url('../assets/block-textures/石砖.png')"></i><b>石砖</b><span>#7a797a</span></div>
+        <div><i style="background-image:url('../assets/block-textures/苔石砖.png')"></i><b>苔石砖</b><span>#737969</span></div>
+        <div><i style="background-image:url('../assets/block-textures/绿宝石矿石.png')"></i><b>绿宝石矿石</b><span>#6c8873</span></div>
+      </div>
+    </article>
+
+    <article class="recipe">
+      <div class="recipe-head"><b>02 深木暗影</b><span class="tone">保留木感</span></div>
+      <div class="preview" style="--sb-base:#1c1409;--sb-fg:#e8e2d4;--sb-dim:#a99a80;--sb-active-fg:#ffffff;--sb-accent-base:#2a2013;--sb-tex:url('../assets/block-textures/深色橡木木板.png');--sb-accent-tex:url('../assets/block-textures/深色橡木原木.png');--sb-dot-tex:url('../assets/block-textures/青金石矿石.png')">
+        <aside class="sb">
+          <div class="sb-brand"><i></i>MINECRAFT</div>
+          <nav>
+            <a class="active" href="#">材质 Material</a>
+            <a href="#">方块 Blocks</a>
+            <a href="#">音效 Sounds</a>
+            <a href="#">设置 Settings</a>
+          </nav>
+          <div class="sb-foot">v1.20.1</div>
+        </aside>
+        <div class="content">
+          <div class="content-title">材质贴图</div>
+          <div class="content-line"></div>
+          <div class="content-line short"></div>
+          <div class="content-cards"><span class="t-base"></span><span class="t-accent"></span><span class="t-dot"></span></div>
+        </div>
+      </div>
+      <div class="parts">
+        <div><i style="background-image:url('../assets/block-textures/深色橡木木板.png')"></i><b>深色橡木木板</b><span>#422b14</span></div>
+        <div><i style="background-image:url('../assets/block-textures/深色橡木原木.png')"></i><b>深色橡木原木</b><span>#3c2e1a</span></div>
+        <div><i style="background-image:url('../assets/block-textures/青金石矿石.png')"></i><b>青金石矿石</b><span>#6b758d</span></div>
+      </div>
+    </article>
+
+    <article class="recipe">
+      <div class="recipe-head"><b>03 暖沙砂岩</b><span class="tone">浅色界面</span></div>
+      <div class="preview" style="--sb-base:#c2ab74;--sb-fg:#241d16;--sb-dim:#5b4c35;--sb-active-fg:#241d16;--sb-accent-base:#cbb87f;--ct-title-fg:#241d16;--sb-shadow:rgba(255,255,255,.4);--sb-active-shadow:rgba(255,255,255,.4);--ct-shadow:rgba(255,255,255,.4);--sb-tex:url('../assets/block-textures/砂岩.png');--sb-accent-tex:url('../assets/block-textures/砂岩-顶面.png');--sb-dot-tex:url('../assets/block-textures/红砖块.png')">
+        <aside class="sb">
+          <div class="sb-brand"><i></i>MINECRAFT</div>
+          <nav>
+            <a class="active" href="#">材质 Material</a>
+            <a href="#">方块 Blocks</a>
+            <a href="#">音效 Sounds</a>
+            <a href="#">设置 Settings</a>
+          </nav>
+          <div class="sb-foot">v1.20.1</div>
+        </aside>
+        <div class="content">
+          <div class="content-title">材质贴图</div>
+          <div class="content-line"></div>
+          <div class="content-line short"></div>
+          <div class="content-cards"><span class="t-base"></span><span class="t-accent"></span><span class="t-dot"></span></div>
+        </div>
+      </div>
+      <div class="parts">
+        <div><i style="background-image:url('../assets/block-textures/砂岩.png')"></i><b>砂岩</b><span>#d8cb9b</span></div>
+        <div><i style="background-image:url('../assets/block-textures/砂岩-顶面.png')"></i><b>砂岩-顶面</b><span>#dfd6aa</span></div>
+        <div><i style="background-image:url('../assets/block-textures/红砖块.png')"></i><b>红砖块</b><span>#966153</span></div>
+      </div>
+    </article>
+
+    <article class="recipe">
+      <div class="recipe-head"><b>04 下界紫红</b><span class="tone">角色 / 剧情</span></div>
+      <div class="preview" style="--sb-base:#12312e;--sb-fg:#e8e2d4;--sb-dim:#a8b8ae;--sb-active-fg:#ffffff;--sb-accent-base:#3a1c2a;--sb-tex:url('../assets/block-textures/诡异木板.png');--sb-accent-tex:url('../assets/block-textures/绯红木板.png');--sb-dot-tex:url('../assets/block-textures/钻石矿石.png')">
+        <aside class="sb">
+          <div class="sb-brand"><i></i>MINECRAFT</div>
+          <nav>
+            <a class="active" href="#">材质 Material</a>
+            <a href="#">方块 Blocks</a>
+            <a href="#">音效 Sounds</a>
+            <a href="#">设置 Settings</a>
+          </nav>
+          <div class="sb-foot">v1.20.1</div>
+        </aside>
+        <div class="content">
+          <div class="content-title">材质贴图</div>
+          <div class="content-line"></div>
+          <div class="content-line short"></div>
+          <div class="content-cards"><span class="t-base"></span><span class="t-accent"></span><span class="t-dot"></span></div>
+        </div>
+      </div>
+      <div class="parts">
+        <div><i style="background-image:url('../assets/block-textures/诡异木板.png')"></i><b>诡异木板</b><span>#2b6863</span></div>
+        <div><i style="background-image:url('../assets/block-textures/绯红木板.png')"></i><b>绯红木板</b><span>#653046</span></div>
+        <div><i style="background-image:url('../assets/block-textures/钻石矿石.png')"></i><b>钻石矿石</b><span>#798d8c</span></div>
+      </div>
+    </article>
+
+    <article class="recipe">
+      <div class="recipe-head"><b>05 海晶青蓝</b><span class="tone">数据 / 仪表盘</span></div>
+      <div class="preview" style="--sb-base:#16302a;--sb-fg:#e8e2d4;--sb-dim:#9db2ab;--sb-active-fg:#ffffff;--sb-accent-base:#17332f;--sb-tex:url('../assets/block-textures/暗海晶石.png');--sb-accent-tex:url('../assets/block-textures/海晶石.png');--sb-dot-tex:url('../assets/block-textures/石英块-顶面.png')">
+        <aside class="sb">
+          <div class="sb-brand"><i></i>MINECRAFT</div>
+          <nav>
+            <a class="active" href="#">材质 Material</a>
+            <a href="#">方块 Blocks</a>
+            <a href="#">音效 Sounds</a>
+            <a href="#">设置 Settings</a>
+          </nav>
+          <div class="sb-foot">v1.20.1</div>
+        </aside>
+        <div class="content">
+          <div class="content-title">材质贴图</div>
+          <div class="content-line"></div>
+          <div class="content-line short"></div>
+          <div class="content-cards"><span class="t-base"></span><span class="t-accent"></span><span class="t-dot"></span></div>
+        </div>
+      </div>
+      <div class="parts">
+        <div><i style="background-image:url('../assets/block-textures/暗海晶石.png')"></i><b>暗海晶石</b><span>#335b4b</span></div>
+        <div><i style="background-image:url('../assets/block-textures/海晶石.png')"></i><b>海晶石</b><span>#639c97</span></div>
+        <div><i style="background-image:url('../assets/block-textures/石英块-顶面.png')"></i><b>石英块-顶面</b><span>#ebe5de</span></div>
+      </div>
+    </article>
+
+    <article class="recipe">
+      <div class="recipe-head"><b>06 竹樱和风</b><span class="tone">装扮 / 图鉴</span></div>
+      <div class="preview" style="--sb-base:#33401a;--sb-fg:#e8e2d4;--sb-dim:#cfc6a8;--sb-active-fg:#241d16;--sb-accent-base:#7a5553;--ct-title-fg:#241d16;--sb-active-shadow:rgba(255,255,255,.35);--ct-shadow:rgba(255,255,255,.35);--sb-tex:url('../assets/block-textures/竹块.png');--sb-accent-tex:url('../assets/block-textures/樱花木板.png');--sb-dot-tex:url('../assets/block-textures/金矿石.png')">
+        <aside class="sb">
+          <div class="sb-brand"><i></i>MINECRAFT</div>
+          <nav>
+            <a class="active" href="#">材质 Material</a>
+            <a href="#">方块 Blocks</a>
+            <a href="#">音效 Sounds</a>
+            <a href="#">设置 Settings</a>
+          </nav>
+          <div class="sb-foot">v1.20.1</div>
+        </aside>
+        <div class="content">
+          <div class="content-title">材质贴图</div>
+          <div class="content-line"></div>
+          <div class="content-line short"></div>
+          <div class="content-cards"><span class="t-base"></span><span class="t-accent"></span><span class="t-dot"></span></div>
+        </div>
+      </div>
+      <div class="parts">
+        <div><i style="background-image:url('../assets/block-textures/竹块.png')"></i><b>竹块</b><span>#7f9039</span></div>
+        <div><i style="background-image:url('../assets/block-textures/樱花木板.png')"></i><b>樱花木板</b><span>#e2b2ac</span></div>
+        <div><i style="background-image:url('../assets/block-textures/金矿石.png')"></i><b>金矿石</b><span>#91856a</span></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">橡木对照 · Why Not Oak</h2>
+    <span class="section-count">2 张</span>
+  </div>
+  <p class="section-desc">同样 32px 平铺、同样压暗底色的条件下，橡木木板的板缝更密、亮度更高，大面积放进侧栏会抢文字。</p>
+  <div class="compare">
+    <div class="sample">
+      <h3>橡木木板 <span>#a2824e · 不推荐做整面侧栏</span></h3>
+      <div class="sample-swatch" style="--s-base:#8a6c3d;background-image:url('../assets/block-textures/橡木木板.png')"></div>
+      <p>板缝每 4px 一条，平铺后形成密集横纹；背景亮度高，<b>浅色文字对比不足</b>。适合小面积卡片或 3D 方块面。</p>
+    </div>
+    <div class="sample">
+      <h3>深色橡木木板 <span>#422b14 · 方案 2 底图</span></h3>
+      <div class="sample-swatch" style="--s-base:#241809;background-image:url('../assets/block-textures/深色橡木木板.png')"></div>
+      <p>同样的板缝密度，压暗后纹理退到背景层，<b>浅色文字依然清晰</b>。想保留木感时用它替换橡木。</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  材质搭配预览 · 对应 references/palette-recipes.md<br>
+  minecraft-pixel-ui · Palette Recipes Demo
+</footer>
+
+</body>
+</html>
