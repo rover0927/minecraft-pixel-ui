@@ -105,6 +105,12 @@ Block hero + inventory-style toolbox + project cards, showing how the skill comp
 
 ![Material texture swatches](docs/showcase/textures.png)
 
+### Sound board
+
+27 vanilla 1.20.1 sounds — UI, block, item, mob and ambient — wired to click-to-play cards with volume, mute and stop controls.
+
+![Sound board demo](docs/showcase/sounds.png)
+
 ## Contents
 
 | Path | Description |
@@ -113,12 +119,14 @@ Block hero + inventory-style toolbox + project cards, showing how the skill comp
 | `assets/minecraft-blocks.css` | Cube and animation framework, drop next to your page |
 | `assets/blocks.js` | Texture registry + `createMinecraftCube` / `playAnim` / `bindClickFlip` |
 | `assets/index-template.html` | MC-themed page skeleton with four gallery sections wired up |
+| [demo/components.html](./demo/components.html) | Component gallery: ~44 MC-styled components in 6 groups |
+| [demo/textures.html](./demo/textures.html) | Material swatches with `.mc-tex` classes, tiling check, and 3D blocks |
+| [demo/sounds.html](./demo/sounds.html) | Sound board: 27 vanilla sounds, click any card to play and hear it |
 | `assets/item-icons/` | 82 16×16 vanilla item icons for inventory / crafting / backpack UI |
 | `assets/gui/` | 4 256×256 container backgrounds: inventory, crafting table, furnace, generic 54-slot |
 | `assets/block-textures/` | 43 16×16 block textures: 11 planks, 6 logs, 11 building, 7 natural, 8 ores |
-| [demo/textures.html](./demo/textures.html) | Material swatches with `.mc-tex` classes, tiling check, and 3D blocks |
-| [demo/components.html](./demo/components.html) | Component gallery: ~44 MC-styled components in 6 groups |
-| `docs/showcase/` | Homepage and component screenshots used by this README |
+| `assets/sounds/` | 27 vanilla 1.20.1 sounds: 6 UI, 12 block, 3 item, 5 mob, 1 ambient |
+| `docs/showcase/` | All showcase screenshots embedded in this README |
 | [references/cube-framework.md](./references/cube-framework.md) | DOM contract, API, animation patterns, Q-style rounding layer |
 | [references/ui-theme.md](./references/ui-theme.md) | Page theme: palette, typography, panels, grid |
 | [references/asset-catalog.md](./references/asset-catalog.md) | Asset layout and item-icon usage |

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<!--
+  音效试听 · Sound Board
+  演示 minecraft-pixel-ui 技能里的 Minecraft 1.20.1 官方音效：
+  - 27 个精选音效（界面 / 方块 / 物品 / 生物 / 环境），原始 .ogg 直接播放；
+  - 点击卡片试听，显示时长与对应游戏事件 id；
+  - 可调音量、静音、停止，音量设置会被记住。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>音效试听 · Sound Board</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='5' fill='%236ab84a'/%3E%3Crect y='5' width='16' height='11' fill='%23866043'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --mc-panel: #38302a;
+      --mc-card: #2a231c;
+      --mc-line: #120e0a;
+      --mc-text: #e8e2d4;
+      --mc-dim: #b3a993;
+      --mc-grass: #6ab84a;
+      --mc-gold: #e8c14a;
+      --mc-edge-light: rgba(255, 255, 255, 0.14);
+      --mc-edge-dark: rgba(0, 0, 0, 0.45);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { image-rendering: pixelated; }
+    body {
+      min-height: 100vh;
+      padding: 32px 20px 48px;
+      font-family: "Courier New", "Microsoft YaHei", "PingFang SC", monospace;
+      color: var(--mc-text);
+      background-color: #241d16;
+      background-image:
+        linear-gradient(rgba(12, 9, 6, 0.62), rgba(12, 9, 6, 0.62)),
+        url("../assets/block-textures/石头.png");
+      background-size: cover, 64px 64px;
+      background-attachment: fixed, scroll;
+    }
+
+    .site-header { max-width: 1180px; margin: 0 auto 26px; text-align: center; }
+    h1 {
+      font-size: clamp(22px, 3.2vw, 32px);
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: #f4f1e6;
+      text-shadow: 3px 3px 0 #2b1d10;
+    }
+    .subtitle {
+      margin-top: 14px;
+      font-size: 12px;
+      line-height: 1.9;
+      color: var(--mc-dim);
+      text-shadow: 1px 1px 0 #000;
+    }
+    .subtitle b { color: var(--mc-grass); font-weight: 400; }
+
+    .toolbar {
+      max-width: 1180px;
+      margin: 0 auto 26px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background-color: var(--mc-panel);
+      background-image: url("../assets/block-textures/石头.png");
+      background-size: 64px 64px;
+      background-blend-mode: multiply;
+      border: 3px solid var(--mc-line);
+      box-shadow: inset 3px 3px 0 var(--mc-edge-light), inset -3px -3px 0 var(--mc-edge-dark);
+    }
+    .toolbar label { font-size: 12px; color: var(--mc-dim); }
+    input[type="range"] {
+      flex: 1 1 180px;
+      min-width: 140px;
+      height: 18px;
+      accent-color: var(--mc-grass);
+      cursor: pointer;
+    }
+    .btn {
+      padding: 7px 16px;
+      font-family: inherit;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #f4f1e6;
+      background: #6b6154;
+      border: 3px solid var(--mc-line);
+      box-shadow: inset 2px 2px 0 rgba(255,255,255,0.18), inset -2px -2px 0 rgba(0,0,0,0.35);
+      cursor: pointer;
+      text-shadow: 1px 1px 0 #000;
+    }
+    .btn:hover { background: #7d7160; }
+    .btn:active { transform: translateY(2px); box-shadow: inset 2px 2px 0 rgba(0,0,0,0.35); }
+    .btn.is-on { background: #4f7a3a; }
+    .now {
+      flex: 1 1 100%;
+      font-size: 12px;
+      color: var(--mc-gold);
+      text-shadow: 1px 1px 0 #000;
+      min-height: 16px;
+    }
+    .now span { color: var(--mc-dim); }
+
+    .section {
+      max-width: 1180px;
+      margin: 0 auto 26px;
+      padding: 22px 22px 24px;
+      background-color: var(--mc-panel);
+      background-image: url("../assets/block-textures/石头.png");
+      background-size: 64px 64px;
+      background-blend-mode: multiply;
+      border: 3px solid var(--mc-line);
+      box-shadow: inset 3px 3px 0 var(--mc-edge-light), inset -3px -3px 0 var(--mc-edge-dark);
+    }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 17px;
+      color: #fff;
+      text-shadow: 2px 2px 0 #14100c;
+    }
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 10px;
+      background-image: url("../assets/block-textures/草方块-顶面.png");
+      background-size: 14px 14px;
+      border: 2px solid var(--mc-line);
+      vertical-align: -1px;
+    }
+    .section-note { font-size: 11px; color: var(--mc-dim); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+      gap: 12px;
+    }
+    .sound {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 12px 10px;
+      text-align: left;
+      font-family: inherit;
+      color: var(--mc-text);
+      background-color: var(--mc-card);
+      background-image: url("../assets/block-textures/圆石.png");
+      background-size: 64px 64px;
+      background-blend-mode: multiply;
+      border: 2px solid var(--mc-line);
+      box-shadow: inset 2px 2px 0 var(--mc-edge-light), inset -2px -2px 0 var(--mc-edge-dark);
+      cursor: pointer;
+      transition: transform 0.08s ease, background-color 0.15s ease;
+    }
+    .sound:hover { background-color: #3a3128; transform: translateY(-2px); }
+    .sound:active { transform: translateY(0); }
+    .sound.is-playing {
+      border-color: var(--mc-grass);
+      background-color: #33402a;
+      box-shadow: inset 0 0 0 2px rgba(106, 184, 74, 0.35), 0 0 12px rgba(106, 184, 74, 0.35);
+    }
+    .sound-name { font-size: 14px; color: #fff; text-shadow: 2px 2px 0 #14100c; padding-right: 34px; }
+    .sound-id {
+      font-size: 10px;
+      color: var(--mc-dim);
+      word-break: break-all;
+      line-height: 1.5;
+    }
+    .sound-time {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 10px;
+      color: var(--mc-gold);
+    }
+    .sound-file { font-size: 9px; color: #7d7362; word-break: break-all; }
+
+    .empty { font-size: 12px; color: var(--mc-dim); }
+
+    .site-footer {
+      max-width: 1180px;
+      margin: 0 auto;
+      font-size: 11px;
+      line-height: 1.9;
+      color: var(--mc-dim);
+      text-align: center;
+      text-shadow: 1px 1px 0 #000;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>音效试听 · Sound Board</h1>
+  <p class="subtitle">
+    27 个 <b>Minecraft 1.20.1 官方音效</b>，原始 .ogg 直接播放<br>
+    点击任意卡片试听 · Click any card to play
+  </p>
+</header>
+
+<div class="toolbar">
+  <label for="volume">音量</label>
+  <input id="volume" type="range" min="0" max="100" value="70" aria-label="音量">
+  <button class="btn" id="mute" type="button">静音</button>
+  <button class="btn" id="stop" type="button">停止</button>
+  <div class="now" id="now">选一个音效开始试听 · <span>pick a sound to start</span></div>
+</div>
+
+<main id="board"></main>
+
+<footer class="site-footer">
+  音效来自 Minecraft 1.20.1 客户端官方资源，仅用于本地演示与学习，请勿随商业产品分发。
+</footer>
+
+<script>
+  const BASE = "../assets/sounds/";
+
+  const GROUPS = [
+    {
+      key: "ui",
+      title: "界面 · UI",
+      note: "按钮、提示、拾取与升级",
+      items: [
+        { name: "按钮点击", id: "ui.button.click", file: "ui/click.ogg" },
+        { name: "提示弹出", id: "ui.toast.in", file: "ui/toast_in.ogg" },
+        { name: "提示收起", id: "ui.toast.out", file: "ui/toast_out.ogg" },
+        { name: "经验拾取", id: "entity.experience_orb.pickup", file: "ui/orb.ogg" },
+        { name: "物品拾取", id: "entity.item.pickup", file: "ui/pop.ogg" },
+        { name: "升级", id: "entity.player.levelup", file: "ui/levelup.ogg" }
+      ]
+    },
+    {
+      key: "block",
+      title: "方块 · Block",
+      note: "放置、破坏、容器与特殊方块",
+      items: [
+        { name: "石头放置", id: "block.stone.place", file: "block/stone_place.ogg" },
+        { name: "石头踩踏", id: "block.stone.hit", file: "block/stone_step.ogg" },
+        { name: "石头破坏", id: "block.stone.break", file: "block/stone_break.ogg" },
+        { name: "木头放置", id: "block.wood.place", file: "block/wood_place.ogg" },
+        { name: "木头破坏", id: "block.wood.break", file: "block/wood_break.ogg" },
+        { name: "玻璃破碎", id: "block.glass.break", file: "block/glass_break.ogg" },
+        { name: "箱子打开", id: "block.chest.open", file: "block/chest_open.ogg" },
+        { name: "箱子关闭", id: "block.chest.close", file: "block/chest_close.ogg" },
+        { name: "紫水晶共鸣", id: "block.amethyst_block.chime", file: "block/amethyst_chime.ogg" },
+        { name: "附魔台", id: "block.enchantment_table.use", file: "block/enchant.ogg" },
+        { name: "音符盒", id: "block.note_block.pling", file: "block/note_pling.ogg" },
+        { name: "铁砧落地", id: "block.anvil.land", file: "block/anvil_land.ogg" }
+      ]
+    },
+    {
+      key: "item",
+      title: "物品 · Item",
+      note: "桶、三叉戟与弓",
+      items: [
+        { name: "装桶", id: "item.bucket.fill", file: "item/bucket_fill.ogg" },
+        { name: "三叉戟投掷", id: "item.trident.throw", file: "item/trident_throw.ogg" },
+        { name: "射箭", id: "entity.arrow.shoot", file: "item/bow_shoot.ogg" }
+      ]
+    },
+    {
+      key: "mob",
+      title: "生物 · Mob",
+      note: "苦力怕、僵尸、恶魂、末影人与受伤",
+      items: [
+        { name: "苦力怕引信", id: "entity.creeper.primed", file: "mob/creeper_fuse.ogg" },
+        { name: "僵尸低语", id: "entity.zombie.ambient", file: "mob/zombie_say.ogg" },
+        { name: "恶魂尖叫", id: "entity.ghast.scream", file: "mob/ghast_scream.ogg" },
+        { name: "末影人传送", id: "entity.enderman.teleport", file: "mob/enderman_portal.ogg" },
+        { name: "玩家受伤", id: "entity.player.hurt", file: "mob/hurt.ogg" }
+      ]
+    },
+    {
+      key: "ambient",
+      title: "环境 · Ambient",
+      note: "洞穴环境音",
+      items: [
+        { name: "洞穴环境", id: "ambient.cave", file: "ambient/cave1.ogg" }
+      ]
+    }
+  ];
+
+  const audio = new Audio();
+  const volume = document.getElementById("volume");
+  const muteBtn = document.getElementById("mute");
+  const stopBtn = document.getElementById("stop");
+  const nowEl = document.getElementById("now");
+  const board = document.getElementById("board");
+
+  let current = null;
+  let lastVolume = 0.7;
+
+  function fmtTime(sec) {
+    if (!isFinite(sec) || sec <= 0) return "--";
+    return sec.toFixed(sec < 10 ? 2 : 1) + "s";
+  }
+
+  function setNow(text, sub) {
+    nowEl.textContent = text + (sub ? " · " : "");
+    if (sub) {
+      const span = document.createElement("span");
+      span.textContent = sub;
+      nowEl.appendChild(span);
+    }
+  }
+
+  function clearActive() {
+    if (current) current.classList.remove("is-playing");
+    current = null;
+  }
+
+  function play(item, card) {
+    clearActive();
+    audio.pause();
+    audio.src = BASE + item.file;
+    audio.currentTime = 0;
+    audio.volume = volume.value / 100;
+    audio.play().catch(function () {
+      setNow("播放失败", item.file);
+    });
+    current = card;
+    card.classList.add("is-playing");
+    setNow("正在播放：" + item.name + "（" + item.id + "）", item.file);
+  }
+
+  audio.addEventListener("ended", function () {
+    clearActive();
+    setNow("播放结束 · finished", "");
+  });
+
+  function build() {
+    GROUPS.forEach(function (group) {
+      const section = document.createElement("section");
+      section.className = "section";
+
+      const head = document.createElement("div");
+      head.className = "section-head";
+      const title = document.createElement("h2");
+      title.className = "section-title";
+      title.textContent = group.title;
+      const note = document.createElement("span");
+      note.className = "section-note";
+      note.textContent = group.items.length + " 个 · " + group.note;
+      head.appendChild(title);
+      head.appendChild(note);
+      section.appendChild(head);
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+
+      group.items.forEach(function (item) {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "sound";
+
+        const name = document.createElement("span");
+        name.className = "sound-name";
+        name.textContent = item.name;
+
+        const time = document.createElement("span");
+        time.className = "sound-time";
+        time.textContent = "--";
+
+        const id = document.createElement("span");
+        id.className = "sound-id";
+        id.textContent = item.id;
+
+        const file = document.createElement("span");
+        file.className = "sound-file";
+        file.textContent = item.file;
+
+        card.appendChild(name);
+        card.appendChild(time);
+        card.appendChild(id);
+        card.appendChild(file);
+
+        card.addEventListener("click", function () { play(item, card); });
+        grid.appendChild(card);
+
+        const probe = new Audio(BASE + item.file);
+        probe.preload = "metadata";
+        probe.addEventListener("loadedmetadata", function () {
+          time.textContent = fmtTime(probe.duration);
+        });
+        probe.addEventListener("error", function () {
+          time.textContent = "缺失";
+        });
+      });
+
+      section.appendChild(grid);
+      board.appendChild(section);
+    });
+  }
+
+  volume.addEventListener("input", function () {
+    audio.volume = volume.value / 100;
+    if (audio.volume > 0) lastVolume = audio.volume;
+    muteBtn.classList.toggle("is-on", audio.volume === 0);
+    muteBtn.textContent = audio.volume === 0 ? "取消静音" : "静音";
+  });
+
+  muteBtn.addEventListener("click", function () {
+    if (audio.volume > 0) {
+      lastVolume = audio.volume;
+      audio.volume = 0;
+      volume.value = 0;
+      muteBtn.classList.add("is-on");
+      muteBtn.textContent = "取消静音";
+    } else {
+      audio.volume = lastVolume || 0.7;
+      volume.value = Math.round(audio.volume * 100);
+      muteBtn.classList.remove("is-on");
+      muteBtn.textContent = "静音";
+    }
+  });
+
+  stopBtn.addEventListener("click", function () {
+    audio.pause();
+    audio.currentTime = 0;
+    clearActive();
+    setNow("已停止 · stopped", "");
+  });
+
+  build();
+</script>
+</body>
+</html>

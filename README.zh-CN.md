@@ -105,6 +105,12 @@
 
 ![材质贴图色卡](docs/showcase/textures.png)
 
+### 音效试听
+
+27 个 1.20.1 原版音效：界面、方块、物品、生物、环境，点击卡片即可试听，带音量、静音与停止控制。
+
+![音效试听页](docs/showcase/sounds.png)
+
 ## 内容
 
 | 路径 | 说明 |
@@ -113,12 +119,14 @@
 | `assets/minecraft-blocks.css` | 立方体与动画框架，可直接复制到页面同目录 |
 | `assets/blocks.js` | 贴图注册表 + `createMinecraftCube` / `playAnim` / `bindClickFlip` |
 | `assets/index-template.html` | 带 MC 像素主题的页面骨架，含四个画廊区块的引导脚本 |
+| [demo/components.html](./demo/components.html) | 组件展示页：6 组约 44 个 MC 风格组件 |
+| [demo/textures.html](./demo/textures.html) | 材质色卡：`.mc-tex` 类、平铺检查、3D 方块 |
+| [demo/sounds.html](./demo/sounds.html) | 音效试听页：27 个原版音效，点击卡片即可播放 |
 | `assets/item-icons/` | 82 个 16×16 官方物品图标，用于物品栏、合成表、背包 UI |
 | `assets/gui/` | 4 张 256×256 容器背景：背包、工作台、熔炉、54 格通用容器 |
 | `assets/block-textures/` | 43 张 16×16 方块贴图：木板 11、原木 6、石料 11、自然 7、矿石 8 |
-| [demo/textures.html](./demo/textures.html) | 材质色卡：`.mc-tex` 类、平铺检查、3D 方块 |
-| [demo/components.html](./demo/components.html) | 组件展示页：6 组约 44 个 MC 风格组件 |
-| `docs/showcase/` | README 使用的主页与组件截图 |
+| `assets/sounds/` | 27 个 1.20.1 原版音效：界面 6、方块 12、物品 3、生物 5、环境 1 |
+| `docs/showcase/` | README 中嵌入的全部展示截图 |
 | [references/cube-framework.md](./references/cube-framework.md) | DOM 契约、API、动画写法、Q 版圆角扩展层 |
 | [references/ui-theme.md](./references/ui-theme.md) | 页面主题：配色、字体、面板、栅格 |
 | [references/asset-catalog.md](./references/asset-catalog.md) | 素材目录与物品图标用法 |
