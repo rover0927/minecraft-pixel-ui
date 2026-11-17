@@ -8,7 +8,7 @@
 
 ## 组件展示 · Components
 
-用本技能的主题复刻常见前端组件，页面在 [demo/components.html](./demo/components.html)，无构建、无依赖，浏览器直接打开即可。
+用本技能的主题复刻常见前端组件，页面在 [demo/components.html](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html)，无构建、无依赖，浏览器直接打开即可。
 
 ![组件展示：基础、布局、导航、数据录入](docs/showcase/components-1.png)
 
@@ -125,10 +125,10 @@
 | `assets/minecraft-blocks.css` | 立方体与动画框架，可直接复制到页面同目录 |
 | `assets/blocks.js` | 贴图注册表 + `createMinecraftCube` / `playAnim` / `bindClickFlip` |
 | `assets/index-template.html` | 带 MC 像素主题的页面骨架，含四个画廊区块的引导脚本 |
-| [demo/components.html](./demo/components.html) | 组件展示页：6 组约 44 个 MC 风格组件 |
-| [demo/textures.html](./demo/textures.html) | 材质色卡：`.mc-tex` 类、平铺检查、3D 方块 |
-| [demo/sounds.html](./demo/sounds.html) | 音效试听页：27 个原版音效，点击卡片即可播放 |
-| [demo/palette.html](./demo/palette.html) | 材质搭配预览：6 套侧栏组合的贴图实拍与部件清单 |
+| [demo/components.html](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html) | 组件展示页：6 组约 44 个 MC 风格组件 |
+| [demo/textures.html](https://rover0927.github.io/minecraft-pixel-ui/demo/textures.html) | 材质色卡：`.mc-tex` 类、平铺检查、3D 方块 |
+| [demo/sounds.html](https://rover0927.github.io/minecraft-pixel-ui/demo/sounds.html) | 音效试听页：27 个原版音效，点击卡片即可播放 |
+| [demo/palette.html](https://rover0927.github.io/minecraft-pixel-ui/demo/palette.html) | 材质搭配预览：6 套侧栏组合的贴图实拍与部件清单 |
 | `assets/item-icons/` | 82 个 16×16 官方物品图标，用于物品栏、合成表、背包 UI |
 | `assets/gui/` | 4 张 256×256 容器背景：背包、工作台、熔炉、54 格通用容器 |
 | `assets/block-textures/` | 43 张 16×16 方块贴图：木板 11、原木 6、石料 11、自然 7、矿石 8 |
@@ -156,8 +156,8 @@
 2. 把素材目录填进 `blocks.js` 顶部的 `TEX_PATH`。
 3. 以 `assets/index-template.html` 为骨架，用 `createMinecraftCube(key, opts)` 生成方块。
 4. 需要物品栏时，把 `assets/item-icons/` 复制到页面资源目录，按 `.mc-slot` 摆放。
-5. 需要材质色卡时，复制 `assets/block-textures/` 并补 `.mc-tex--<block>` 类，参考 `demo/textures.html`。
-6. 组件外观参考 `demo/components.html` 里的样式与结构。
+5. 需要材质色卡时，复制 `assets/block-textures/` 并补 `.mc-tex--<block>` 类，参考 [demo/textures.html](https://rover0927.github.io/minecraft-pixel-ui/demo/textures.html)。
+6. 组件外观参考 [demo/components.html](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html) 里的样式与结构。
 
 更完整的流程见 [SKILL.md](./SKILL.md) 的「核心工作流」。
 

@@ -8,7 +8,7 @@ A verified Minecraft pixel-UI skill pack: pure-CSS 3D blocks, vanilla texture re
 
 ## Components
 
-Common front-end components rebuilt with this skill's theme. The demo is a single file, no build step and no dependencies — open [demo/components.html](./demo/components.html) in a browser.
+Common front-end components rebuilt with this skill's theme. The demo is a single file, no build step and no dependencies — open [demo/components.html](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html) in a browser.
 
 ![Components: basics, layout, navigation, data entry](docs/showcase/components-1.png)
 
@@ -125,10 +125,10 @@ Six ready-made sidebar recipes — stone bricks, dark oak, sandstone, nether, pr
 | `assets/minecraft-blocks.css` | Cube and animation framework, drop next to your page |
 | `assets/blocks.js` | Texture registry + `createMinecraftCube` / `playAnim` / `bindClickFlip` |
 | `assets/index-template.html` | MC-themed page skeleton with four gallery sections wired up |
-| [demo/components.html](./demo/components.html) | Component gallery: ~44 MC-styled components in 6 groups |
-| [demo/textures.html](./demo/textures.html) | Material swatches with `.mc-tex` classes, tiling check, and 3D blocks |
-| [demo/sounds.html](./demo/sounds.html) | Sound board: 27 vanilla sounds, click any card to play and hear it |
-| [demo/palette.html](./demo/palette.html) | Material pairing preview: six sidebar recipes with live texture mockups |
+| [demo/components.html](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html) | Component gallery: ~44 MC-styled components in 6 groups |
+| [demo/textures.html](https://rover0927.github.io/minecraft-pixel-ui/demo/textures.html) | Material swatches with `.mc-tex` classes, tiling check, and 3D blocks |
+| [demo/sounds.html](https://rover0927.github.io/minecraft-pixel-ui/demo/sounds.html) | Sound board: 27 vanilla sounds, click any card to play and hear it |
+| [demo/palette.html](https://rover0927.github.io/minecraft-pixel-ui/demo/palette.html) | Material pairing preview: six sidebar recipes with live texture mockups |
 | `assets/item-icons/` | 82 16×16 vanilla item icons for inventory / crafting / backpack UI |
 | `assets/gui/` | 4 256×256 container backgrounds: inventory, crafting table, furnace, generic 54-slot |
 | `assets/block-textures/` | 43 16×16 block textures: 11 planks, 6 logs, 11 building, 7 natural, 8 ores |
@@ -156,8 +156,8 @@ Six ready-made sidebar recipes — stone bricks, dark oak, sandstone, nether, pr
 2. Point `TEX_PATH` at the top of `blocks.js` to your texture folder.
 3. Start from `assets/index-template.html` and call `createMinecraftCube(key, opts)`.
 4. For inventory UI, copy `assets/item-icons/` into your page assets and lay out `.mc-slot` cells.
-5. For material swatches, copy `assets/block-textures/` and add `.mc-tex--<block>` classes; see `demo/textures.html`.
-6. Use `demo/components.html` as the style reference for components.
+5. For material swatches, copy `assets/block-textures/` and add `.mc-tex--<block>` classes; see [demo/textures.html](https://rover0927.github.io/minecraft-pixel-ui/demo/textures.html).
+6. Use [demo/components.html](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html) as the style reference for components.
 
 Full workflow: [SKILL.md](./SKILL.md).
 
