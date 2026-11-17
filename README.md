@@ -1,10 +1,22 @@
 **English** · [简体中文](./README.zh-CN.md)
 
-# Minecraft Pixel UI
+<h1 align="center">Minecraft Pixel UI</h1>
 
-A verified Minecraft pixel-UI skill pack: pure-CSS 3D blocks, vanilla texture registry, animation recipes, Q-style rounded blocks, item icons and GUI panel assets, plus the pitfalls we hit and how we fixed them.
+<p align="center">A verified Minecraft pixel-UI skill pack: pure-CSS 3D blocks, vanilla texture registry, animation recipes, Q-style rounded blocks, item icons and GUI panel assets, plus the pitfalls we hit and how we fixed them.</p>
+
+<p align="center">
+  <a href="https://rover0927.github.io/minecraft-pixel-ui/"><img alt="Live preview" src="docs/badges/live.svg"></a>
+  <a href="./LICENSE"><img alt="MIT License" src="docs/badges/license.svg"></a>
+  <img alt="43 textures" src="docs/badges/textures.svg">
+  <img alt="27 sounds" src="docs/badges/sounds.svg">
+  <img alt="44 components" src="docs/badges/components.svg">
+</p>
 
 > GitHub only renders `README.md`. Chinese version: [README.zh-CN.md](./README.zh-CN.md). The skill definition lives in [SKILL.md](./SKILL.md) and is the source of truth for agents.
+
+---
+
+**Jump to components:** [Overview](#components) · [Quick reference](#component-quick-reference) · [Basics](#general--basics) · [Layout](#layout) · [Navigation](#navigation) · [Data Entry](#data-entry-forms) · [Data Display](#data-display) · [Feedback](#feedback) · [Live demo](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html)
 
 ## Components
 
@@ -134,6 +146,7 @@ Six ready-made sidebar recipes — stone bricks, dark oak, sandstone, nether, pr
 | `assets/block-textures/` | 43 16×16 block textures: 11 planks, 6 logs, 11 building, 7 natural, 8 ores |
 | `assets/sounds/` | 27 vanilla 1.20.1 sounds: 6 UI, 12 block, 3 item, 5 mob, 1 ambient |
 | `docs/showcase/` | All showcase screenshots embedded in this README |
+| `docs/badges/` | Pixel-style SVG badges used at the top of this README |
 | [references/cube-framework.md](./references/cube-framework.md) | DOM contract, API, animation patterns, Q-style rounding layer |
 | [references/ui-theme.md](./references/ui-theme.md) | Page theme: palette, typography, panels, grid |
 | [references/asset-catalog.md](./references/asset-catalog.md) | Asset layout and item-icon usage |

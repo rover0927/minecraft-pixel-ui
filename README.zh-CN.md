@@ -1,10 +1,22 @@
 [English](./README.md) · **简体中文**
 
-# Minecraft Pixel UI
+<h1 align="center">Minecraft Pixel UI</h1>
 
-一套已验证的 Minecraft 像素 UI 技能包：纯 CSS 3D 方块、原版贴图注册表、动画配方、Q 版圆角处理、物品图标与 GUI 面板素材，以及踩过的坑和修复结论。
+<p align="center">一套已验证的 Minecraft 像素 UI 技能包：纯 CSS 3D 方块、原版贴图注册表、动画配方、Q 版圆角处理、物品图标与 GUI 面板素材，以及踩过的坑和修复结论。</p>
+
+<p align="center">
+  <a href="https://rover0927.github.io/minecraft-pixel-ui/"><img alt="在线预览" src="docs/badges/live.svg"></a>
+  <a href="./LICENSE"><img alt="MIT 协议" src="docs/badges/license.svg"></a>
+  <img alt="43 张贴图" src="docs/badges/textures.svg">
+  <img alt="27 个音效" src="docs/badges/sounds.svg">
+  <img alt="44 个组件" src="docs/badges/components.svg">
+</p>
 
 > GitHub 仓库首页只会渲染 `README.md`，中文版在 [README.zh-CN.md](./README.zh-CN.md)，技能主体定义在 [SKILL.md](./SKILL.md)。
+
+---
+
+**组件快捷跳转：** [组件总览](#组件展示--components) · [中英速查](#组件中英文速查) · [基础](#通用--基础) · [布局](#布局) · [导航](#导航) · [数据录入](#数据录入表单) · [数据展示](#数据展示) · [反馈](#反馈) · [在线组件页](https://rover0927.github.io/minecraft-pixel-ui/demo/components.html)
 
 ## 组件展示 · Components
 
@@ -134,6 +146,7 @@
 | `assets/block-textures/` | 43 张 16×16 方块贴图：木板 11、原木 6、石料 11、自然 7、矿石 8 |
 | `assets/sounds/` | 27 个 1.20.1 原版音效：界面 6、方块 12、物品 3、生物 5、环境 1 |
 | `docs/showcase/` | README 中嵌入的全部展示截图 |
+| `docs/badges/` | README 顶部使用的像素风 SVG 徽章 |
 | [references/cube-framework.md](./references/cube-framework.md) | DOM 契约、API、动画写法、Q 版圆角扩展层 |
 | [references/ui-theme.md](./references/ui-theme.md) | 页面主题：配色、字体、面板、栅格 |
 | [references/asset-catalog.md](./references/asset-catalog.md) | 素材目录与物品图标用法 |
