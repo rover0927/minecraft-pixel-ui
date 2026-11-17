@@ -109,7 +109,7 @@ div.mc-stage.mc-size-{sm|md|lg|xl}
 
 ## Q 版圆角层（页面级扩展）
 
-目标：缩小 + 圆角，但保留六面盒体。框架 CSS/JS 不改，只在页面层加圆角、明暗和 6 块内芯。已验证实现见 `mc-css-effects/q-version-preview.html`（三种半径对照）与 `mc-css-effects/index.html`（全站同步方案 A）。
+目标：缩小 + 圆角，但保留六面盒体。框架 CSS/JS 不改，只在页面层加圆角、明暗和 6 块内芯。三种半径的对照效果见 `docs/showcase/q-preview.png`。
 
 ### 圆角 + 近顶点直角
 

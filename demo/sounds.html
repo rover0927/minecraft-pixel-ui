@@ -138,6 +138,13 @@
       vertical-align: -1px;
     }
     .section-note { font-size: 11px; color: var(--mc-dim); }
+    .section-count {
+      font-size: 10px;
+      color: #14240f;
+      background: var(--mc-grass);
+      border: 1px solid var(--mc-line);
+      padding: 3px 7px;
+    }
 
     .grid {
       display: grid;
@@ -350,8 +357,12 @@
       title.textContent = group.title;
       const note = document.createElement("span");
       note.className = "section-note";
-      note.textContent = group.items.length + " 个 · " + group.note;
+      note.textContent = group.note;
+      const count = document.createElement("span");
+      count.className = "section-count";
+      count.textContent = group.items.length + " 个";
       head.appendChild(title);
+      head.appendChild(count);
       head.appendChild(note);
       section.appendChild(head);
 

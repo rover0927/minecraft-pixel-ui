@@ -22,13 +22,14 @@
 | 次要文字 | `#b3a993` |
 | 草绿强调 | `#6ab84a` |
 | 金色提示 | `#f5c542` |
-| 字体 | `Press Start 2P`, `Microsoft YaHei`, `PingFang SC`, `monospace`；像素字体只覆盖拉丁/数字，中文回退雅黑 |
+| 字体 | `Courier New`, `Microsoft YaHei`, `PingFang SC`, `monospace`；不引外部字体，中文回退雅黑 |
 
 背景砖（16×16，`image-rendering: pixelated`）：
 
-- 页面底：`界面-光-泥土-背景.png`，平铺 32px，上层压一层半透明深色渐变遮罩。
+- 页面底：`石头.png`，64px 平铺（`background-attachment: fixed, scroll`），上层压一层 `rgba(12,9,6,.6)` 深色遮罩。
+- 画廊/模板页：`界面-光-泥土-背景.png` 平铺 32px + 深色遮罩，`assets/index-template.html` 用这套。
 - 面板：`石头.png`，64px 平铺，`background-blend-mode: multiply` 压暗。
-- 标题前的草方块标记：`草方块-顶面.png`，18×18，带 2px 黑边。
+- 标题前的草方块标记：`草方块-顶面.png`，14×14，带 2px 黑边。
 
 ## 页面结构与 JS 钩子
 
@@ -53,8 +54,8 @@
 
 - `border: 3px solid` 近黑；
 - 斜面阴影：`inset 3px 3px 0 rgba(255,255,255,.14)` + `inset -3px -3px 0 rgba(0,0,0,.5)`；
-- 内边距 26px 24px，区块间距 38px；
-- 标题 `.section-title`：草方块贴图标记 + 白色标题 + 黑色投影；描述 `.section-desc` 次要色、行距 1.8。
+- 内边距 22px 22px 24px，区块间距 26px；面板最大宽度 1180px 居中；
+- 标题 `.section-title`：17px、草方块贴图标记 + 白色标题 + 黑色投影；标题旁可跟 `.section-count` 草绿计数徽章；描述 `.section-desc` 次要色 12px、行距 1.9。
 
 ### 首屏行 `.hero-row`
 
@@ -83,7 +84,9 @@
 
 - 特效栅格：`repeat(auto-fill, minmax(172px, 1fr))`，间距 18px。
 - 方块画廊：`repeat(auto-fill, minmax(148px, 1fr))`，间距 16px，`justify-items: center`。
-- ≤600px：特效列宽降到 128px、画廊 116px，面板内边距收窄，首屏间距 32px。
+- 组件卡：`repeat(auto-fit, minmax(258px, 1fr))`，间距 14px；卡片纵向 flex、`align-items: stretch`，同排卡片等高。
+- 贴图色卡：`repeat(auto-fill, minmax(118px, 1fr))`，间距 14px；音效卡：`repeat(auto-fill, minmax(196px, 1fr))`，间距 12px。
+- ≤640px：组件卡改为单列，面板内边距收窄到 18px 12px，贴图色卡降到 104px、色块 76px。
 - 立方体 `.mc-cube` 保持 `margin: 0 auto`，标签比方块宽时仍水平居中。
 
 ## 禁忌

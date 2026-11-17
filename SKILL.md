@@ -14,15 +14,18 @@ description: "构建、扩展与排障 Minecraft 风格的纯 CSS 3D 方块演�
 - `assets/minecraft-blocks.css` — 立方体与动画框架，可直接复制到页面同目录使用。
 - `assets/blocks.js` — 贴图注册表 + `createMinecraftCube` / `playAnim` / `bindClickFlip`，挂到 `window`；顶部 `TEX_PATH` 按素材目录相对路径调整。
 - `assets/index-template.html` — 带 MC 像素主题的页面骨架，含四个画廊区块的引导脚本范例。
+- `demo/components.html` — 组件样式参考页：42 张卡，覆盖基础、布局、导航、表单、展示、反馈 6 组，纯 HTML/CSS，同时是三页共用的页面主题基准。
+- `demo/textures.html` — 材质贴图色卡 + 3D 方块示例页，含 `.mc-tex` 类与平铺检查。
+- `demo/sounds.html` — 音效试听页：27 个精选音效，点击播放，带音量、静音、停止与时长预读。
 - `assets/item-icons/` — 82 个 16×16 官方物品图标（英文文件名），可直接用于物品栏、合成表、背包 UI。
 - `assets/gui/` — 4 张 256×256 容器背景（背包、工作台、熔炉、54 格通用容器），可当面板底图。
 - `assets/block-textures/` — 43 张 16×16 方块贴图（木板 11、原木 6、石料 11、自然 7、矿石 8），中文文件名，可直接平铺或走 CSS 材质类。
-- `demo/textures.html` — 材质贴图色卡 + 3D 方块示例页，含 `.mc-tex` 类与平铺检查。
+- `assets/sounds/` — 27 个精选原版音效（`.ogg`，6 界面 / 12 方块 / 3 物品 / 5 生物 / 1 环境），按 `ui/`、`block/`、`item/`、`mob/`、`ambient/` 分目录。
 
 ## 参考文档（按需读取）
 
 - 改立方体结构、加动画、查 DOM/API/类名约定 → 读 `references/cube-framework.md`
-- 用物品图标、物品栏槽位、GUI 容器背景、方块贴图材质类，或从 client-extra / mc中文素材 补素材 → 读 `references/asset-catalog.md`
+- 用物品图标、物品栏槽位、GUI 容器背景、方块贴图材质类、音效素材，或从 client-extra / mc中文素材 / 音效库 补素材 → 读 `references/asset-catalog.md`
 - 改页面外观、布局、配色、字体、栅格 → 读 `references/ui-theme.md`
 - 排查面错位、拍平、动画不恢复、贴图灰度等问题 → 读 `references/pitfalls.md`，先核对已验证结论，避免回退。
 
@@ -64,6 +67,14 @@ description: "构建、扩展与排障 Minecraft 风格的纯 CSS 3D 方块演�
 3. 物品栏按 18px 网格排槽位，槽位样式与数量角标见 `asset-catalog.md` 的 `.mc-slot`；合成表就是 3×3 槽位。
 4. 需要原版容器底图时用 `textures/gui/container/*.png` 整图，不要整张塞进单个槽位。
 
+### 使用音效素材
+
+1. 音效从 `assets/sounds/` 取，按用途分 `ui/`、`block/`、`item/`、`mob/`、`ambient/` 五个子目录；文件是官方 `.ogg`，直接 `new Audio("../assets/sounds/ui/click.ogg")` 播放，不转码、不重采样。
+2. 页面只复用一个 `Audio` 实例：切换音效时先 `pause()`、再改 `src`、再 `play()`，避免多条音轨叠在一起。
+3. 音量统一走一个 `0–1` 的 `audio.volume`，演示控件用 `<input type="range">` + 静音按钮；默认音量不超过 0.7。
+4. 卡片上标出中文名、游戏事件 id（如 `block.stone.place`）与相对路径，方便对照 `sounds.json` 换素材。
+5. 27 个文件的分类清单、事件 id 与补素材命令见 `references/asset-catalog.md` 的「音效素材」，示例页 `demo/sounds.html`。
+
 ### 追加 Q 版圆角（可选，页面层）
 
 目标：缩小 + 圆角，但仍保留六面盒体。全部改在页面层，不动框架 CSS/JS 的既有类名：
@@ -87,3 +98,4 @@ description: "构建、扩展与排障 Minecraft 风格的纯 CSS 3D 方块演�
 - 视角倾斜只放在 `.mc-iso-tilt` 层，动画 `transform` 只作用 `.mc-cube` 层。
 - 圆角是页面层扩展：只加 `.face` 的 `border-radius`、额外挂 `.q-core` 子节点，不改框架 CSS 与生成函数签名；近顶点直角映射依赖 `rotateX(-20deg) rotateY(-30deg)`，换视角需重算。
 - 贴图目录只通过 `window.MC_TEX_PATH` 覆盖，不改 `blocks.js` 顶部默认值，避免破坏其他页面。
+- 音效保持原始 `.ogg`，不转码不重采样；页面只复用单个 `Audio` 实例，切换前先 `pause()`，默认音量不超过 0.7。

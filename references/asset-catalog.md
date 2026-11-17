@@ -136,6 +136,53 @@ $dst = 'f:\Assets\skills\minecraft-pixel-ui\assets\block-textures'
 Copy-Item "$src\樱花原木.png" $dst -Force
 ```
 
+## 音效素材
+
+位置：`assets/sounds/`，27 个 `.ogg`，取自 Minecraft 1.20.1 客户端官方资源，按用途分目录：
+
+| 分类 | 数量 | 文件 |
+| --- | --- | --- |
+| 界面 `ui/` | 6 | click、toast_in、toast_out、orb、pop、levelup |
+| 方块 `block/` | 12 | stone_place、stone_step、stone_break、wood_place、wood_break、glass_break、chest_open、chest_close、amethyst_chime、enchant、note_pling、anvil_land |
+| 物品 `item/` | 3 | bucket_fill、trident_throw、bow_shoot |
+| 生物 `mob/` | 5 | creeper_fuse、zombie_say、ghast_scream、enderman_portal、hurt |
+| 环境 `ambient/` | 1 | cave1 |
+
+事件 id 与文件名的完整对照在 `demo/sounds.html` 的 `GROUPS` 数组里（如 `block.stone.place` → `block/stone_place.ogg`）。
+
+播放：页面只复用一个 `Audio` 实例，切换前先 `pause()`，避免多条音轨叠加。
+
+```js
+const audio = new Audio();
+function play(file) {
+  audio.pause();
+  audio.src = "../assets/sounds/" + file;
+  audio.currentTime = 0;
+  audio.volume = 0.7;        // 0–1，默认不超过 0.7
+  audio.play();
+}
+play("ui/click.ogg");
+```
+
+时长预读用独立的 `new Audio()` + `loadedmetadata` 事件，不要为了取时长去解码整段音频。
+
+补充音效（从全量库挑选，注意库内是三层结构 `<分类>/<子目录>/<文件>.ogg`）：
+
+```powershell
+$src = 'f:\Assets\minecraft\mc音效素材\sounds'
+$dst = 'f:\Assets\skills\minecraft-pixel-ui\assets\sounds'
+Copy-Item "$src\ui\toast\in.ogg" "$dst\ui\toast_in.ogg" -Force
+Copy-Item "$src\block\note_block\pling.ogg" "$dst\block\note_pling.ogg" -Force
+```
+
+全量库 `f:\Assets\minecraft\mc音效素材` 约 520MB、3416 个 ogg，配 `sounds.json` 记录每个游戏事件引用的路径；技能只精选 27 个，不要整库复制。
+
+使用注意：
+
+- 保持原始 `.ogg`，不转码、不重采样、不改名；技能内统一小写英文 + 下划线，页面用相对路径 `ui/click.ogg` 引用。
+- 一张卡片对应一个事件 id，换素材时同步改卡片上的 id 与文件名。
+- 音效仅在用户点击等交互后播放，不要自动循环播放。
+
 ## 中文素材与官方英文贴图
 
 - `f:\Assets\minecraft\mc中文素材` 是中文命名的方块贴图（`blocks.js` 默认 `TEX_PATH` 指向它），与 `client-extra/textures/block` 的官方英文贴图对应，可互相替换。
