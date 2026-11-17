@@ -284,3 +284,7 @@
 ## 素材说明
 
 物品图标与 GUI 底图来自 Minecraft 客户端资源包（`client-extra`），仅用于本地演示、原型与学习，请勿随商业产品分发。放大只使用整数倍并配合 `image-rendering: pixelated`。
+
+## 开源协议
+
+代码与文档采用 [MIT License](./LICENSE)。Minecraft 的贴图、图标与音效版权归 Mojang/Microsoft 所有，仅随技能用于本地演示与学习，见上方素材说明。

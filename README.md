@@ -284,3 +284,7 @@ Full workflow: [SKILL.md](./SKILL.md).
 ## Assets
 
 Item icons and GUI backgrounds come from the Minecraft client resource pack (`client-extra`). Use them for local demos, prototypes and learning only; do not redistribute them with commercial products. Scale only by integer multiples and pair with `image-rendering: pixelated`.
+
+## License
+
+Code and documentation are released under the [MIT License](./LICENSE). Minecraft textures, icons and sounds belong to Mojang/Microsoft and are included for local demos and learning only — see the asset note above.
